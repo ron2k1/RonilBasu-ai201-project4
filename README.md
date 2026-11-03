@@ -485,10 +485,14 @@ make a wrong id look real to a later lookup.
 
 Claude Code (Anthropic's coding agent) built this unit at my request. That
 covers the code, the tests, the calibration set, docs/trace.md, criteria.md
-and this README, including the five criteria. The 87 pytest tests and the live
+and this README, including the five criteria. The 95 pytest tests and the live
 run in Sample Run were run by Claude Code. The two moments below are the
 points where a second AI agent, given none of the build's context, read the
-work as an outsider, and its answer changed what shipped.
+work as an outsider, and its answer changed what shipped. A separate review
+agent read the finished code before it was pushed and found a rounding hole:
+an average of 0.69997 slipped past the agreement gate and then rounded up to
+0.7000, so one signal alone could reach the AI label. It was fixed test-first
+(commit `cc155be`).
 
 **Moment 1**
 
