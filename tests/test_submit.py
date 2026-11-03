@@ -66,7 +66,17 @@ def test_submit_writes_one_decision_line_matching_the_response(client, log_path)
 def test_text_is_trimmed_before_it_is_judged(client, log_path):
     response = client.post("/submit", json={"text": "\n\n  " + SAMPLE_TEXT + "  \n", "creator_id": "w"})
     assert response.status_code == 200
-    assert read_log(log_path)[0]["word_count"] == 50
+    entry = read_log(log_path)[0]
+    assert entry["word_count"] == 50
+    # word_count alone can't tell: words() skips whitespace either way.
+    assert entry["text_preview"] == SAMPLE_TEXT[:80]
+
+
+def test_padding_does_not_count_against_the_length_cap(client):
+    padded = " " * config.MAX_TEXT_CHARS + SAMPLE_TEXT + "\n" * 100
+    assert len(padded) > config.MAX_TEXT_CHARS
+    response = client.post("/submit", json={"text": padded, "creator_id": "w"})
+    assert response.status_code == 200
 
 
 BAD_BODIES = [
