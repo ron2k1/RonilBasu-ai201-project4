@@ -374,15 +374,28 @@ def appeal():
     previous_status = appeals[-1]["status"] if appeals else decision["status"]
     entry = audit.log_appeal(content_id, decision["creator_id"], reasoning)
 
+    message = ("Your appeal is recorded, and this post is now waiting for a "
+               "person to review it.")
+    if _shows_pending_label(decision):
+        message += (" Until then, its label says a review is pending and the "
+                    "automated flag is unconfirmed.")
+
     return jsonify({
         "content_id": content_id,
         "status": entry["status"],
         "previous_status": previous_status,
-        "message": "Your appeal is recorded, and this post is now waiting for "
-                   "a person to review it. Until then, its label says a "
-                   "review is pending and the automated flag is unconfirmed.",
+        "message": message,
         "appealed_at": entry["timestamp"],
     })
+
+
+def _shows_pending_label(decision: dict) -> bool:
+    """
+    Only an AI label is a flag. A human or unsure label already says it is
+    not a finding against the writer, so it stays up during a review instead
+    of being replaced by text about a flag that never existed.
+    """
+    return decision.get("guess") == "ai"
 
 
 def _history(content_id: str):
@@ -419,6 +432,7 @@ def content_status(content_id):
 
     decision, appeals = history
     under_review = bool(appeals)
+    pending = under_review and _shows_pending_label(decision)
     return jsonify({
         "content_id": content_id,
         "status": "under_review" if under_review else decision["status"],
@@ -426,7 +440,7 @@ def content_status(content_id):
         "confidence": decision["combined_score"],
         "model_score": decision["model_score"],
         "style_score": decision["style_score"],
-        "label": scoring.REVIEW_PENDING_LABEL if under_review else decision["label"],
+        "label": scoring.REVIEW_PENDING_LABEL if pending else decision["label"],
         "original_label": decision["label"],
         "decided_at": decision["timestamp"],
         "appeal_count": len(appeals),

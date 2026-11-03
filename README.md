@@ -46,6 +46,11 @@ and the time of the latest one, not the appeals themselves. The appeal
 reasoning is the writer's message to a reviewer, not something every reader of
 the post should see.
 
+Two limits of that. The starter's `GET /log` is an operator's view and still
+returns every line, reasoning included. And there are no accounts in unit 7,
+so anyone holding a `content_id` can appeal it. The appeal line records the
+creator from the original decision, not who sent the appeal.
+
 The plan written before any code (the path, both signals and their blind
 spots, the false-positive trace and the endpoint contract) is in
 [docs/trace.md](docs/trace.md).
@@ -223,8 +228,9 @@ Every score from 0 to 1 gets exactly one label (`tests/test_labels.py` walks
 all 1,001 steps of 0.001). All three are reached by real texts in the Sample
 Run below.
 
-Once a writer appeals, `GET /content/<content_id>` shows this in place of the
-original label:
+Once a writer appeals an AI label, `GET /content/<content_id>` shows this in
+its place. A human or unsure label already says it is not a finding against
+the writer, so it stays up while a review is pending:
 
 > The writer has asked for a person to review the automated flag on this
 > post. Until that review is finished, the flag is unconfirmed and is not a

@@ -131,6 +131,28 @@ def test_content_shows_under_review_and_the_pending_label_after_an_appeal(client
     assert "reasoning" not in json.dumps(body)
 
 
+def test_the_ai_appeal_message_says_the_flag_is_unconfirmed(client):
+    decision = submit(client)
+    assert decision["guess"] == "ai"
+    body = client.post("/appeal", json={"content_id": decision["content_id"], "reasoning": REASON}).get_json()
+    assert "unconfirmed" in body["message"]
+
+
+def test_appealing_a_label_that_was_never_a_flag_keeps_it_and_claims_no_flag(client, fixed_model):
+    fixed_model["score"] = 0.1
+    decision = submit(client)
+    assert decision["guess"] == "unsure"
+
+    appeal = client.post("/appeal", json={"content_id": decision["content_id"], "reasoning": REASON})
+    assert appeal.status_code == 200
+    assert "flag" not in appeal.get_json()["message"]
+
+    body = client.get(f"/content/{decision['content_id']}").get_json()
+    assert body["status"] == "under_review"
+    assert body["appeal_count"] == 1
+    assert body["label"] == decision["label"]
+
+
 def test_content_for_an_unknown_id_is_a_json_404(client):
     response = client.get("/content/nope")
     assert response.status_code == 404
