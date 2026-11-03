@@ -576,9 +576,11 @@ The window is a moving one (`RATE_LIMIT_STRATEGY = "moving-window"` in
 `config.py`). A fixed window resets on the minute, which lets a script send
 five at 0:59 and five more at 1:00.
 
-**What a caller counts as:** the `creator_id` in the request body. When a body
-has no usable `creator_id` (the field is missing or blank, or the body isn't a
-JSON object), it counts against the caller's address instead.
+**What a caller counts as:** the `creator_id` in the request body, cleaned the
+same way the log cleans it, so `" bob"` and `"bob "` share bob's budget. When a
+body has no usable `creator_id` (the field is missing, blank, not a string or
+over 200 characters, or the body isn't a JSON object), it counts against the
+caller's address instead.
 
 The two choices fail in different ways. `creator_id` is whatever the caller
 types, so a script that changes it on every request gets a fresh budget each
@@ -591,12 +593,27 @@ straight past the limit, which is listed under What's Still Broken.
 
 Refused requests count against the budget too. Flask-Limiter checks the limit
 before `/submit` runs, so a request that would have got a `422` still uses up
-one of the five.
+one of the five. A body over 256 KB can't be read for its `creator_id`, so it
+counts against the address, and the sixth one in a minute gets a `429` instead
+of a `413`.
+
+A code review of this section found three holes in my first version, all now
+fixed and covered by tests in `tests/test_rate_limit.py`:
+
+1. The limiter used the raw id while the log stripped it, so `"bob"` with
+   different padding got a fresh budget each time and the log showed them all
+   as `bob`.
+2. An id of any length became a limiter key, kept for a day.
+3. Reading an oversized body raised before the limiter counted it, so 413s
+   never turned into 429s.
+
+The `429` line also used to log the raw id. It now logs the cleaned one, with
+the route and status like every other refusal.
 
 **The run of status codes when I pushed past it:**
 
 ```
-python run_attacks.py --flood 15 --creator flood_writer --flood-text "<39 words>"
+python run_attacks.py --flood 15 --creator flood_writer --flood-text "<38 words>"
 
 200 200 200 200 200 429 429 429 429 429 429 429 429 429 429
 ```
@@ -634,6 +651,9 @@ All five decision lines carry the nine fields (`timestamp`, `content_id`,
 ```json
 {"timestamp": "2026-11-03T21:42:07+00:00", "creator_id": "flood_writer", "event": "rejected", "status": "rejected", "reason": "rate_limited", "limit": "5 per 1 minute"}
 ```
+
+That line is from the run, before the review fix above. A `429` line written
+now also carries `"route": "/submit"` and `"http_status": 429`.
 
 ---
 

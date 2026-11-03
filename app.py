@@ -77,6 +77,22 @@ if config.RATE_LIMITING_ENABLED:
     from flask_limiter import Limiter
     from flask_limiter.util import get_remote_address
 
+    def _json_body() -> dict:
+        """The request's JSON object, or {} when there isn't one to read."""
+        try:
+            payload = request.get_json(silent=True)
+        except RequestEntityTooLarge:
+            # silent= only covers bad JSON. A body over MAX_REQUEST_BYTES
+            # raises while it's read, and if that happens here the limiter
+            # never records the hit, so an oversized flood would never reach
+            # a 429. The route reads it again and refuses it with a 413.
+            return {}
+        # A body that parses as JSON but isn't an object — a bare list or
+        # string — has no .get. Without this guard the key function raises
+        # BEFORE the route runs, and a malformed request becomes a 500 that
+        # looks like your handler crashed when your handler never ran.
+        return payload if isinstance(payload, dict) else {}
+
     def rate_limit_key():
         """
         Who a request counts against.
@@ -85,16 +101,12 @@ if config.RATE_LIMITING_ENABLED:
         stretch asks about per-creator limits instead — and the difference
         matters: one script can look like a thousand callers, and one household
         can look like one.
+
+        The id is cleaned the same way the log cleans it, so " bob" and "bob "
+        share bob's budget, and an id too long to log falls back to the
+        address instead of becoming a new key of any size.
         """
-        payload = request.get_json(silent=True)
-        # A body that parses as JSON but isn't an object — a bare list or
-        # string — has no .get. Without this guard the key function raises
-        # BEFORE the route runs, and a malformed request becomes a 500 that
-        # looks like your handler crashed when your handler never ran.
-        if not isinstance(payload, dict):
-            return get_remote_address()
-        creator = payload.get("creator_id")
-        return creator if isinstance(creator, str) and creator.strip() else get_remote_address()
+        return _clean_creator_id(_json_body().get("creator_id")) or get_remote_address()
 
     limiter = Limiter(
         key_func=rate_limit_key,
@@ -111,12 +123,11 @@ if config.RATE_LIMITING_ENABLED:
 
         ⚠️ An attack that shows up only as an absence is one you'll never find.
         """
-        payload = request.get_json(silent=True)
-        if not isinstance(payload, dict):
-            payload = {}
         audit.log_rejection(
-            creator_id=payload.get("creator_id", "unknown"),
+            creator_id=_clean_creator_id(_json_body().get("creator_id")) or "unknown",
             reason="rate_limited",
+            route=request.path,
+            http_status=429,
             limit=str(exc.description),
         )
         return jsonify({
