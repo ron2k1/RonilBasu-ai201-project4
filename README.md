@@ -205,13 +205,14 @@ and the number to watch in unit 8.
 
 **Where this leaves the criteria before unit 8 runs:** on the calibration set
 the final rule gives the AI label to 0 of 10 human texts (7 human, 3 unsure)
-and to 2 of 6 unedited AI texts. Three of the four AI texts it missed sit
-within 0.01 of the line (0.690, 0.693, 0.697), and the mean gap between the
-groups is 0.27. If unit 8's Set A behaves the same way, criterion 2 (3 of 5
-flagged and a 0.30 gap) misses. The 0.70 line was not lowered to chase those
-three. The rule was written before these numbers existed, and lowering the
-line would cut the human margin from 0.064 to about 0.04 on the strength of
-18 texts.
+and to 2 of 6 unedited AI texts. The four it missed score 0.693, 0.690, 0.648
+and 0.454. The 0.690 is the abstract held at the gate's cap. The mean gap
+between the groups is 0.27. If unit 8's Set A behaves the same way, criterion
+2 (3 of 5 flagged and a 0.30 gap) misses. The 0.70 line was not lowered to
+chase the 0.693 text. The rule was written before these numbers existed, and
+catching that one text would take a line at 0.693, which cuts the human
+margin from 0.064 to 0.057. The abstract stays unsure under any line, because
+the cap moves with it.
 
 ---
 
@@ -362,8 +363,8 @@ PS> curl.exe -s -X POST http://127.0.0.1:5000/appeal -H "Content-Type: applicati
 }
 ```
 
-The same appeal with the last character of the id changed
-(`appeal_typo.json`) is refused, not quietly accepted:
+An appeal whose id has its last character changed (`appeal_typo.json`) is
+refused, not quietly accepted:
 
 ```powershell
 PS> curl.exe -s -X POST http://127.0.0.1:5000/appeal -H "Content-Type: application/json" --data-binary "@samples/sample_run/appeal_typo.json"

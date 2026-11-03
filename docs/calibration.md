@@ -160,12 +160,15 @@ attack set will lean on.
   "unsure". The three unsure ones are the two plain Simple Wikipedia texts
   and the "harsh reality check" post. Plain writing still pays a price, just
   a smaller one: an "unsure" label instead of an accusation.
-- **AI side:** 2 of 6 unedited AI texts get "ai". 4 land in "unsure", and
-  three of those are within 0.01 of the line (0.690, 0.693, 0.697). Mean
-  combined score: AI 0.662, human 0.390, a gap of 0.27.
+- **AI side:** 2 of 6 unedited AI texts get "ai". 4 land in "unsure" at
+  0.693, 0.690, 0.648 and 0.454. The 0.690 is the abstract held at the
+  gate's cap. The lightly edited essay sits at 0.697, but it is in the
+  ai_edited group, not this count. Mean combined score: AI 0.662, human
+  0.390, a gap of 0.27.
 - **Against the criteria:** if Set A in unit 8 behaves like this, criterion 2
   (3 of 5 flagged, a 0.30 gap) misses. I am not moving the 0.70 line to fix
-  that here. The rule was written before these numbers existed, and lowering
-  the line to catch three AI texts sitting at 0.69 would cut the human margin
-  from 0.064 to about 0.04 on the strength of 18 texts. Unit 8 measures it on
-  texts this rule has never seen.
+  that here. The rule was written before these numbers existed. Catching the
+  0.693 text would take a line at 0.693, which cuts the human margin from
+  0.064 to 0.057 for one text. The abstract stays unsure under any line,
+  because the cap moves with it. Unit 8 measures it on texts this rule has
+  never seen.
