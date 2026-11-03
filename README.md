@@ -711,8 +711,11 @@ is in `results/verdicts_run_2026-11-03_1649_before.md`.
   same topic and register as one Set H text. The calibration set's AI texts
   came from `claude-opus-5-5`, so this is a different model too.
 - Set B: Set A with light edits made by Claude Code to the criterion's
-  recipe. `scenarios.py::check_sets` measures the edits at 4.0% to 5.5% of
-  words changed, under the 10% cap. criteria.md says "a person then lightly
+  recipe. `scenarios.py::words_changed` puts the edits at 4.0% to 5.5% of
+  words changed, and `check_sets` fails any pair over the 10% cap. That
+  measure counts a swapped word once. Counting each swap as one word deleted
+  plus one inserted roughly doubles it, and puts B4 at 10.2%, just over the
+  cap; the other four stay under 9%. criteria.md says "a person then lightly
   edited", so this is a departure: the edits follow the recipe, but a model
   made them, not a person.
 

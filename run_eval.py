@@ -137,13 +137,19 @@ def run_appeals(scenario, trial, requests, args):
 
     first_id = real[0][0].get("content_id") or ""
     typo_id = first_id[:-1] + ("0" if first_id[-1:] != "0" else "1")
+    def appeal_count():
+        return sum(1 for e in read_log(requests, args.url) if e.get("event") == "appeal")
+
     made_up = []
     for content_id in (spec["made_up_id"], typo_id):
+        # Counted across the whole log, not by this id: an appeal logged under
+        # a null or rewritten id would slip past a search for the id itself.
+        before = appeal_count()
         status, payload = post_json(
             requests, f"{args.url}/appeal",
             {"content_id": content_id, "reasoning": spec["reasoning"].format(trial=trial, i="x")},
             args.timeout)
-        made_up.append((content_id, status, payload))
+        made_up.append((content_id, status, payload, appeal_count() - before))
 
     log = read_log(requests, args.url)
     results = []
@@ -175,7 +181,7 @@ def run_appeals(scenario, trial, requests, args):
         results.append({"kind": "real", "content_id": cid,
                         "guess": decision.get("guess"), **checks})
 
-    for content_id, status, payload in made_up:
+    for content_id, status, payload, appeals_added in made_up:
         mentions = [e for e in log if e.get("content_id") == content_id]
         appeal_lines = [e for e in mentions if e.get("event") == "appeal"]
         results.append({
@@ -184,7 +190,8 @@ def run_appeals(scenario, trial, requests, args):
             "appeal_status": status,
             "error": payload.get("error") if isinstance(payload, dict) else None,
             "appeal_lines_with_this_id": len(appeal_lines),
-            "passed": status == 404 and not appeal_lines,
+            "appeal_lines_added": appeals_added,
+            "passed": status == 404 and not appeal_lines and appeals_added == 0,
         })
     return results
 

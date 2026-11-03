@@ -41,8 +41,10 @@ def trial_cells(rows, t):
     passed[1] = all_ok and h_ai == 0
 
     a_ai = guesses(A).count("ai")
-    gap = (statistics.mean(r["confidence"] for r in A)
-           - statistics.mean(r["confidence"] for r in H)) if all_ok else float("nan")
+    # Scores come back rounded to 4 places, so the gap is too. Unrounded,
+    # 0.7 - 0.4 is 0.29999999999999993 and a gap that meets 0.30 would miss.
+    gap = round(statistics.mean(r["confidence"] for r in A)
+                - statistics.mean(r["confidence"] for r in H), 4) if all_ok else float("nan")
     cells[2] = f"{a_ai}/5 ai, gap {gap:+.3f}"
     passed[2] = all_ok and a_ai >= 3 and gap >= 0.30
 
@@ -99,6 +101,11 @@ def main():
     path = Path(sys.argv[1])
     data = json.loads(path.read_text(encoding="utf-8"))
     n = data["trials"]
+    # Every criterion says "in each of the three trials". One clean trial
+    # would otherwise come out MET.
+    if n < 3:
+        sys.exit(f"{path.name} has {n} trial(s); criteria.md judges three. "
+                 "Run run_eval.py with --trials 3.")
     rows = {row["name"]: row["trials"] for row in data["rows"]}
     criteria = {row["name"]: row["criterion"] for row in data["rows"]}
     assert sorted(criteria.values()) == [1, 2, 3, 4, 5], criteria
