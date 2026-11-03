@@ -49,14 +49,29 @@ def combine_signals(model_score: float, style_score: float) -> float:
       - Milestone 4 asks you to find a case where your two signals split and
         write it down. That case is what this rule exists to handle.
 
-    The weights in config.py are placeholders. Change them, or ignore them and
-    write a different rule.
+    The rule (written first in docs/calibration.md, numbers in config.py):
+
+      1. Weighted average, style counts double: 1/3 model + 2/3 style.
+      2. Agreement gate: if that average reaches the AI threshold while either
+         signal on its own is at or below AGREEMENT_FLOOR (0.5), cap it just
+         under the AI threshold. It lands in "unsure". One signal alone never
+         produces an accusation.
+      3. The gate only guards the AI side. A low average gives the human label
+         without both signals agreeing.
+
+    The split case this exists for: the AI paper abstract in the calibration
+    set. GPT-2 finds its jargon surprising (model 0.28) while its shape is the
+    most machine-like in the set (style 0.96). The average is 0.73, the gate
+    sees model at 0.28, and it is capped to 0.69: unsure.
     """
-    # TODO: replace this
-    return (
-        config.WEIGHT_MODEL_SIGNAL * model_score
-        + config.WEIGHT_STYLE_SIGNAL * style_score
-    )
+    average = (config.WEIGHT_MODEL_SIGNAL * model_score
+               + config.WEIGHT_STYLE_SIGNAL * style_score)
+
+    both_lean_ai = min(model_score, style_score) > config.AGREEMENT_FLOOR
+    if average >= config.AI_THRESHOLD and not both_lean_ai:
+        average = config.AI_THRESHOLD - 0.01
+
+    return round(min(max(average, 0.0), 1.0), 4)
 
 
 def score_to_label(score: float) -> tuple[str, str]:

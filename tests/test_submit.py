@@ -29,6 +29,19 @@ def test_submit_returns_the_contract_fields(client):
     assert 0.0 <= body["confidence"] <= 1.0
 
 
+def test_confidence_is_the_combining_rule_applied_to_both_signals(client, log_path):
+    import scoring
+    import stylometry
+
+    body = client.post("/submit", json={"text": SAMPLE_TEXT, "creator_id": "w"}).get_json()
+
+    assert body["style_score"] == stylometry.style_signal(SAMPLE_TEXT)
+    assert body["confidence"] == scoring.combine_signals(0.8, body["style_score"])
+    entry = read_log(log_path)[0]
+    assert (entry["model_score"], entry["style_score"], entry["combined_score"]) == (
+        body["model_score"], body["style_score"], body["confidence"])
+
+
 def test_each_submission_gets_its_own_content_id(client):
     first = client.post("/submit", json={"text": SAMPLE_TEXT, "creator_id": "w"}).get_json()
     second = client.post("/submit", json={"text": SAMPLE_TEXT, "creator_id": "w"}).get_json()

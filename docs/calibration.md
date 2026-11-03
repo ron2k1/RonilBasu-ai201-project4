@@ -111,3 +111,61 @@ calibration set and is the number to watch in unit 8.
 
 Where it lives: `scoring.py::combine_signals` (rule) and
 `scoring.py::score_to_label` (thresholds). Every number is in `config.py`.
+
+## After coding it: the whole calibration set under the final rule
+
+Output of `python scripts/calibrate.py --markdown` (perplexity midpoint 25,
+weights 1/3 and 2/3, agreement gate, bands 0.45 and 0.70). `spread`, `ttr`
+and `punct` are the raw measures; `style` is the averaged 0-1 sub-scores.
+
+| group | id | words | ppl | model | spread | ttr | punct | style | combined | guess |
+|---|---|---|---|---|---|---|---|---|---|---|
+| human_casual | reddit_to_the_girl_that_splash | 184 | 29.9 | 0.429 | 0.683 | 0.803 | 0.038 | 0.175 | 0.260 | human |
+| human_casual | reddit_got_a_harsh_reality_che | 284 | 18.1 | 0.626 | 0.439 | 0.819 | 0.004 | 0.641 | 0.636 | unsure |
+| human_casual | reddit_psa_never_get_into_a_ca | 146 | 37.7 | 0.341 | 0.580 | 0.764 | 0.021 | 0.255 | 0.283 | human |
+| human_casual | reddit_this_is_how_to_remove_t | 97 | 39.9 | 0.321 | n/a | 0.758 | 0.041 | 0.216 | 0.251 | human |
+| human_casual | reddit_professor_needing_stude | 218 | 28.9 | 0.442 | 0.667 | 0.823 | 0.046 | 0.163 | 0.256 | human |
+| human_plain | simple_honey_bee | 122 | 21.3 | 0.563 | 0.307 | 0.705 | 0.016 | 0.518 | 0.533 | unsure |
+| human_plain | simple_moon | 188 | 17.0 | 0.650 | 0.381 | 0.726 | 0.011 | 0.495 | 0.546 | unsure |
+| human_formal | wiki_erie_canal | 138 | 14.5 | 0.706 | 0.300 | 0.724 | 0.043 | 0.299 | 0.434 | human |
+| human_formal | wiki_photosynthesis | 241 | 19.6 | 0.597 | 0.443 | 0.822 | 0.066 | 0.308 | 0.404 | human |
+| human_formal | arxiv_bert | 162 | 32.2 | 0.400 | 0.706 | 0.859 | 0.049 | 0.243 | 0.295 | human |
+| ai | ai_post_parking | 119 | 33.2 | 0.389 | 0.527 | 0.895 | 0.034 | 0.487 | 0.454 | unsure |
+| ai | ai_post_freshman_advice | 135 | 24.5 | 0.507 | 0.524 | 0.900 | 0.007 | 0.718 | 0.648 | unsure |
+| ai | ai_simple_honey_bee | 115 | 12.8 | 0.746 | 0.243 | 0.708 | 0.000 | 0.667 | 0.693 | unsure |
+| ai | ai_wiki_erie_canal | 127 | 19.2 | 0.603 | 0.234 | 0.845 | 0.016 | 0.787 | 0.726 | ai |
+| ai | ai_abstract | 126 | 45.4 | 0.278 | 0.292 | 0.941 | 0.000 | 0.960 | 0.690 | unsure |
+| ai | ai_essay_belonging | 141 | 19.2 | 0.603 | 0.249 | 0.861 | 0.014 | 0.837 | 0.759 | ai |
+| ai_edited | edited_post_parking | 116 | 40.8 | 0.313 | 0.389 | 0.899 | 0.017 | 0.762 | 0.612 | unsure |
+| ai_edited | edited_essay_belonging | 129 | 23.8 | 0.520 | 0.338 | 0.841 | 0.000 | 0.785 | 0.697 | unsure |
+
+### The four Milestone 4 inputs
+
+| input | text | model | style | combined | guess |
+|---|---|---|---|---|---|
+| clearly AI | personal essay | 0.603 | 0.837 | 0.759 | ai |
+| clearly human | r/rutgers professor post (2020) | 0.442 | 0.163 | 0.256 | human |
+| formal human | Wikipedia Photosynthesis (2021) | 0.597 | 0.308 | 0.404 | human |
+| lightly edited AI | the same essay, edited | 0.520 | 0.785 | 0.697 | unsure |
+
+The edit moved signal one from 0.60 to 0.52 and signal two from 0.84 to
+0.79. That was enough to drop the essay from "ai" to "unsure". The edit was
+contractions, one sentence split in two, a semicolon turned into a comma and
+a few dropped commas. That is a cheap edit, and it is the blind spot unit 8's
+attack set will lean on.
+
+### What this says before unit 8 runs anything
+
+- **Human side:** 0 of 10 human texts get "ai". 7 get "human" and 3 get
+  "unsure". The three unsure ones are the two plain Simple Wikipedia texts
+  and the "harsh reality check" post. Plain writing still pays a price, just
+  a smaller one: an "unsure" label instead of an accusation.
+- **AI side:** 2 of 6 unedited AI texts get "ai". 4 land in "unsure", and
+  three of those are within 0.01 of the line (0.690, 0.693, 0.697). Mean
+  combined score: AI 0.662, human 0.390, a gap of 0.27.
+- **Against the criteria:** if Set A in unit 8 behaves like this, criterion 2
+  (3 of 5 flagged, a 0.30 gap) misses. I am not moving the 0.70 line to fix
+  that here. The rule was written before these numbers existed, and lowering
+  the line to catch three AI texts sitting at 0.69 would cut the human margin
+  from 0.064 to about 0.04 on the strength of 18 texts. Unit 8 measures it on
+  texts this rule has never seen.

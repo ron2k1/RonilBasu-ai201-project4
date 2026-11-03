@@ -252,10 +252,8 @@ def submit():
                        "about your writing. Please try again later.",
                        creator_id=creator_id, detail=type(exc).__name__)
 
-    # Milestone 3: one signal. Confidence and label are placeholders until
-    # the second signal and the combining rule exist.
-    style_score = None
-    confidence = model_score
+    style_score = stylometry.style_signal(text)
+    confidence = scoring.combine_signals(model_score, style_score)
     guess, label = scoring.score_to_label(confidence)
 
     content_id = str(uuid.uuid4())

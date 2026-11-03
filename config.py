@@ -46,6 +46,15 @@ DETECTOR_MODEL = os.getenv("AI201_DETECTOR_MODEL", "gpt2")
 # 300 words, which is enough for the signal to mean something.
 DETECTOR_MAX_TOKENS = 400
 
+# The perplexity that scores 0.5, and how sharply the score moves around it.
+# The starter's midpoint was 45. At 45 all ten human calibration texts scored
+# above 0.5, so ordinary human writing started out leaning AI. 25 is the
+# median perplexity of those ten texts: a typical human text is now a coin
+# flip, and only text more predictable than most human writing leans AI.
+# docs/calibration.md has the table.
+MODEL_PPL_MIDPOINT = 25.0
+MODEL_PPL_STEEPNESS = 1.6
+
 
 # ─── What the routes accept (Milestone 3) ────────────────────────────────────
 # Decided in docs/trace.md before the route existed. Every refusal is a 4xx
@@ -69,32 +78,77 @@ MAX_CREATOR_ID_CHARS = 200
 MAX_APPEAL_CHARS = 5_000
 
 
-# ─── Scoring (Milestone 4) ───────────────────────────────────────────────────
-# How much each signal counts toward the combined score.
-#
-# ⚠️ These are placeholders. Milestone 4 asks you to write your combining rule
-# down BEFORE you code it, and to put the numbers in your README. Whatever you
-# decide, it goes here.
+# ─── Signal two: the style signal (Milestone 4) ──────────────────────────────
+# Each measure becomes a 0-1 "AI-likeness" sub-score by a straight ramp between
+# two anchors: the value that maps to 0.0 (reads human) and the value that maps
+# to 1.0 (reads AI). Past either anchor it clips. The anchors were read off
+# samples/calibration.json with scripts/calibrate.py; docs/calibration.md has
+# the table they came from.
 
-WEIGHT_MODEL_SIGNAL = 0.5
-WEIGHT_STYLE_SIGNAL = 0.5
+# Sentence-length spread (stdev / mean of words per sentence). Uneven is human.
+SPREAD_HUMAN_ANCHOR = 0.60
+SPREAD_AI_ANCHOR = 0.25
+# Fewer sentences than this and spread is noise, so that sub-score sits at 0.5.
+MIN_SENTENCES_FOR_SPREAD = 3
+
+# Vocabulary variety: moving-window type-token ratio, window MATTR_WINDOW words.
+# On the calibration set this runs the OPPOSITE way to the starter's guess:
+# current chat models avoid repeating words, so higher variety reads as AI.
+MATTR_WINDOW = 50
+VOCAB_HUMAN_ANCHOR = 0.75
+VOCAB_AI_ANCHOR = 0.90
+
+# Uncommon punctuation per word: ; : ! ? ( ) quotes ellipses / & *. Periods,
+# commas, apostrophes and hyphens are left out because everyone uses them.
+# Em dashes are left out on purpose: current chat models use them heavily, so
+# counting them as a human habit would reward AI text.
+PUNCT_HUMAN_ANCHOR = 0.045
+PUNCT_AI_ANCHOR = 0.005
+
+# How the three sub-scores are weighted inside the style signal.
+STYLE_WEIGHT_SPREAD = 1 / 3
+STYLE_WEIGHT_VOCAB = 1 / 3
+STYLE_WEIGHT_PUNCT = 1 / 3
+
+
+# ─── Scoring (Milestone 4) ───────────────────────────────────────────────────
+# How much each signal counts toward the combined score. The rule was written
+# down before it was coded, in docs/calibration.md.
+#
+# Style counts double. On the calibration set it separated human from AI
+# (group means about 0.33 vs 0.74); GPT-2 did not (0.713 vs 0.719). The model
+# keeps a third because it reads word choice in context, which style can't.
+
+WEIGHT_MODEL_SIGNAL = 1 / 3
+WEIGHT_STYLE_SIGNAL = 2 / 3
+
+# The agreement gate. The AI label needs BOTH signals above this on their own.
+# If the average reaches AI_THRESHOLD while either signal is at or below it,
+# the score is capped just under AI_THRESHOLD and lands in "unsure". One
+# witness is never enough to accuse someone. The gate is one-sided on purpose:
+# a wrong "human" label costs little, a wrong "AI" label costs a person a lot.
+AGREEMENT_FLOOR = 0.5
 
 
 # ─── Thresholds (Milestone 5) ────────────────────────────────────────────────
 # Where one label becomes another. Scores run 0.0 (confidently human) to 1.0
 # (confidently AI).
 #
-#   score < HUMAN_THRESHOLD          -> high-confidence human
+#   score <  HUMAN_THRESHOLD         -> high-confidence human
 #   between the two                  -> unsure
-#   score > AI_THRESHOLD             -> high-confidence AI
+#   score >= AI_THRESHOLD            -> high-confidence AI
 #
 # ⚠️ This is where your false-positive decision from Milestone 1 actually gets
 # made. Widening the unsure band means fewer wrong accusations and more AI text
 # getting through. There is no setting that avoids the trade — only settings
 # that decide who pays for it.
+#
+# Lopsided on purpose. The AI label takes 0.20 above a coin flip; the human
+# label takes 0.05 below one. The thinnest human margin on the calibration set
+# is a real 2019 r/rutgers post at 0.636, under 0.70 by 0.06.
 
-HUMAN_THRESHOLD = 0.35
-AI_THRESHOLD = 0.65
+HUMAN_THRESHOLD = 0.45
+AI_THRESHOLD = 0.70
 
 # ⚠️ One thing that catches people out in Milestone 5. A weighted average can
 # only land between its two inputs — so while `style_signal` is still the stub
