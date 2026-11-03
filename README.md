@@ -661,38 +661,290 @@ whose work got caught by it:
 
 ## Run Log and Verdicts
 
-<!-- Your five criteria across three trials. `run_eval.py --label before`. -->
+`python run_eval.py --label before`, three trials, then
+`python scripts/verdicts.py results/run_2026-11-03_1649_before.json`, which
+applies each target to each trial. A target counts as met only if it holds in
+all three.
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. No human writing gets the AI label | 0 of 10 Set H get `ai` | 0/10 ai | 0/10 ai | 0/10 ai | MET |
+| 2. The detector still catches unedited AI | ≥ 3 of 5 Set A get `ai`, and mean confidence A − H ≥ 0.30 | 0/5 ai, gap +0.051 | 0/5 ai, gap +0.051 | 0/5 ai, gap +0.051 | MISSED |
+| 3. All three labels reachable, borderline in the middle | each label ≥ 2 of all 20, and ≥ 3 of 5 Set B `unsure` | ai 0, unsure 12, human 8; B unsure 2/5 | same | same | MISSED |
+| 4. Every appeal changes status and is recorded | 7 of 7 appeal checks | 7/7 | 7/7 | 7/7 | MET |
+| 5. Bad input refused cleanly with a trace | 8 of 8 bodies: 4xx, `error` field, one `rejected` line; `/ping` answers | 8/8, ping ok | 8/8, ping ok | 8/8, ping ok | MET |
 
-**Real output from one trial**, pasted as text, naming the file and function
-that produced it:
+The three trials are identical to the fourth decimal. GPT-2 and the style
+counts are deterministic, so each criterion here is one observation repeated
+three times, not three independent draws. Every scored text with both signals
+is in `results/verdicts_run_2026-11-03_1649_before.md`.
+
+**What the test sets are.** All three were built for this run in
+`scenarios.py`, from sources the calibration set never touched:
+
+- Set H: five Hacker News comments from 2019 (casual) and five formal texts,
+  two Stanford Encyclopedia of Philosophy preambles (Fall 2021 archive) and
+  three PubMed abstracts dated 2018. `scripts/fetch_set_h.py` picked them by a
+  fixed rule (oldest first, no links or code, 80 to 300 words), so nothing
+  about the detector chose them.
+- Set A: five unedited outputs from `claude-sonnet-5-5`, each prompted on the
+  same topic and register as one Set H text. The calibration set's AI texts
+  came from `claude-opus-5-5`, so this is a different model too.
+- Set B: Set A with light edits made by Claude Code to the criterion's
+  recipe. `scenarios.py::check_sets` measures the edits at 4.0% to 5.5% of
+  words changed, under the 10% cap.
+
+**Criterion 4 needed a runner extension.** The starter `run_eval.py` only
+posts to `/submit`. I extended it (`run_eval.py::run_appeals`) to submit five
+texts, appeal each new `content_id`, appeal two made-up ids (one never issued,
+one a real id with its last character changed), then read `GET /log` and
+check every line the criterion names. The appeal reasoning carries a newline,
+an em dash and an accented letter, so "exact reasoning" is tested on more than
+plain ASCII. Criterion 5 got the same treatment in `run_eval.py::run_bodies`:
+it reads the log's length before and after each bad body and posts to `/ping`
+after the batch.
+
+**Real output from trial 1**, from `results/run_2026-11-03_1649_before.json`,
+written by `run_eval.py::write_report`. The `/submit` responses inside come
+from `app.py::submit`.
+
+Criterion 1, the two Set H texts that came closest to the AI line (H5, a
+Hacker News comment, and H7, an encyclopedia preamble):
 
 ```json
+[
+  {
+    "status": 200,
+    "guess": "unsure",
+    "confidence": 0.634,
+    "model_score": 0.3479,
+    "style_score": 0.7771,
+    "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+    "error": null,
+    "sent": "The creation of an enemy and blaming them for all the problem seems to"
+  },
+  {
+    "status": 200,
+    "guess": "unsure",
+    "confidence": 0.6199,
+    "model_score": 0.694,
+    "style_score": 0.5829,
+    "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+    "error": null,
+    "sent": "Around the turn of the twenty-first century, what has come to be calle"
+  }
+]
+```
 
+Criterion 2, the Set A text with the highest style score (A1) and the one
+with the highest model score (A5):
+
+```json
+[
+  {
+    "status": 200,
+    "guess": "unsure",
+    "confidence": 0.5805,
+    "model_score": 0.189,
+    "style_score": 0.7763,
+    "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+    "error": null,
+    "sent": "I think the idea is interesting but I'd be wary of calling it an impro"
+  },
+  {
+    "status": 200,
+    "guess": "unsure",
+    "confidence": 0.5383,
+    "model_score": 0.6928,
+    "style_score": 0.4611,
+    "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+    "error": null,
+    "sent": "Background: Prices of new cancer drugs in the United States continue t"
+  }
+]
+```
+
+Criterion 3, two Set B texts that the light edits pushed in opposite
+directions (B3 up, B5 down to `human`):
+
+```json
+[
+  {
+    "status": 200,
+    "guess": "unsure",
+    "confidence": 0.6544,
+    "model_score": 0.2473,
+    "style_score": 0.8579,
+    "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+    "error": null,
+    "sent": "I understand why YouTube's doing this, but it feels like a blunt tool "
+  },
+  {
+    "status": 200,
+    "guess": "human",
+    "confidence": 0.4144,
+    "model_score": 0.6501,
+    "style_score": 0.2965,
+    "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+    "error": null,
+    "sent": "Background: Prices of new cancer drugs in the United States continue t"
+  }
+]
+```
+
+Criterion 4, one real appeal and the two made-up ids, from
+`run_eval.py::run_appeals`:
+
+```json
+[
+  {
+    "kind": "real",
+    "content_id": "aafed780-53d6-4fb5-9e00-ce324ea12077",
+    "guess": "human",
+    "appeal_status": 200,
+    "appeal_response_status": "under_review",
+    "decision_lines": 1,
+    "decision_unchanged_and_decided": true,
+    "appeal_lines": 1,
+    "appeal_line_has_exact_reasoning": true,
+    "appeal_line_after_decision": true,
+    "passed": true
+  },
+  {
+    "kind": "made_up",
+    "content_id": "00000000-0000-4000-8000-000000000000",
+    "appeal_status": 404,
+    "error": "unknown_content_id",
+    "appeal_lines_with_this_id": 0,
+    "passed": true
+  },
+  {
+    "kind": "made_up",
+    "content_id": "aafed780-53d6-4fb5-9e00-ce324ea12070",
+    "appeal_status": 404,
+    "error": "unknown_content_id",
+    "appeal_lines_with_this_id": 0,
+    "passed": true
+  }
+]
+```
+
+Criterion 5, bodies 5 to 8 and the `/ping` after them, from
+`run_eval.py::run_bodies` (bodies 1 to 4 are four more `400`s in the file):
+
+```json
+[
+  {
+    "status": 400,
+    "error": "missing_text",
+    "guess": null,
+    "log_lines_added": 1,
+    "last_log_event": "rejected",
+    "last_log_reason": "missing_text",
+    "sent": "{\"text\": 12345, \"creator_id\": \"eval_bad_5\"}"
+  },
+  {
+    "status": 400,
+    "error": "invalid_json",
+    "guess": null,
+    "log_lines_added": 1,
+    "last_log_event": "rejected",
+    "last_log_reason": "invalid_json",
+    "sent": "[{\"text\": \"In the context of that, I'm fine with youtube's rule, but we were already off on a tangent in the meta discus"
+  },
+  {
+    "status": 413,
+    "error": "text_too_long",
+    "guess": null,
+    "log_lines_added": 1,
+    "last_log_event": "rejected",
+    "last_log_reason": "text_too_long",
+    "sent": "word word word word word word word word word word word word word word "
+  },
+  {
+    "status": 422,
+    "error": "text_too_short",
+    "guess": null,
+    "log_lines_added": 1,
+    "last_log_event": "rejected",
+    "last_log_reason": "text_too_short",
+    "sent": "This has only five words."
+  },
+  {
+    "ping_after_batch": true,
+    "status": 200,
+    "ok": true
+  }
+]
 ```
 
 **Diagnoses**
 
-<!-- For each miss AND each broken attack: the stage and the mechanism.
+The two misses are one problem seen twice. Nothing out of the 20 texts reached
+the AI band: the highest score was 0.6544, and the band starts at 0.70.
 
-     Your service has five stages: the route, signal one, signal two, the
-     combining rule, and the label mapping.
+Criterion 2, missed. The stage is signal one, and the combining rule turns its
+failure into a veto.
 
-     Not a diagnosis:  "The evasion attacks got through."
-     A diagnosis:      "Four evasion inputs got through. All four had typos
-                        added to AI-generated text. My second signal measures
-                        word variety, and typos raise word variety — so it read
-                        them as more human. My combining rule weights that
-                        signal at 0.6, so it dragged the whole score down."
+- GPT-2 rates a text as AI when the text is predictable to GPT-2.
+  `claude-sonnet-5-5` does not write like a 2019 model. Its casual comments
+  were less predictable to GPT-2 than the real 2019 Hacker News comments:
+  mean model score 0.274 for the three casual Set A texts against 0.360 for
+  the five casual Set H texts. In the formal register the two means were the
+  same to four places (0.5163 and 0.5163). Across all of Set A the model
+  signal pointed the wrong way, at 0.371 against 0.438 for Set H.
+- The combining rule gives that signal a third of the weight, so a low model
+  score caps what style can do. A1 had the strongest style score in Set A at
+  0.776, but with a model score of 0.189 it needed 0.956 to reach 0.70. The
+  agreement gate also needs the model score above 0.5, which no casual Set A
+  text had. A5 (the abstract) was the only one past 0.5 on the model, and its
+  style score was 0.461. The `Background:` / `Methods:` labels and `(FDA)` count
+  as uncommon punctuation, which my style signal reads as human.
+- So 0 of 5 could reach `ai`. The +0.051 gap splits into +0.073 from style
+  (Set A did lean AI on style, 0.597 against 0.488) and −0.022 from the model
+  signal pulling the other way.
+- The gate does the opposite of its job on this data. Two human texts had both
+  signals above 0.5 (H7, an encyclopedia preamble at 0.694 and 0.583, and H10,
+  a PubMed abstract at 0.510 and 0.587). No Set A text did. If the AI band
+  started at 0.61, the only one of the 20 texts to get the AI label would be
+  H7, a human encyclopedia entry. Lowering the threshold makes this worse.
 
-     Look for a pattern. Five failures on one signal is one problem, not five. -->
+Unit 7's calibration warned about this. GPT-2 did not separate the groups there
+either (0.713 against 0.719), and I said criterion 2 would likely miss. This
+run shows the same thing on texts and a model the calibration never saw.
+
+Criterion 3, missed on both halves.
+
+- No `ai` label at all, for the reason above.
+- 2 of 5 Set B landed `unsure`, against a target of 3. The other three went to
+  `human`. The stage is signal two, and the measure is sentence-length
+  spread. Over a text of 6 to 9 sentences, the coefficient of variation is set
+  by its shortest and longest sentences, so one split or merge swings it.
+  Splitting "We identified all new oncology drugs ... and obtained their launch
+  prices" in B5 created a five-word sentence. The spread rose from 0.394 to
+  0.559, the style score fell from 0.461 to 0.297, and the label went from
+  `unsure` to `human`. B4's split did the same (style 0.539 to 0.411).
+- The same kind of edit pushed B3 the other way. Merging "Probably both." into
+  the sentence before removed a two-word sentence, the spread fell from 0.583
+  to 0.399, and style rose from 0.683 to 0.858.
+- The typos barely touched vocabulary variety (MATTR moved 0.003 at most). They
+  did move signal one: a misspelled word is a rare token to GPT-2, so the model
+  score dropped in all five pairs (A5 0.693 to B5 0.650, for example). Every
+  typo pushes toward `human`.
+- The pattern: light editing does not move AI text into the middle band. It
+  moves it at random along one fragile measure, and the typos add a steady
+  push toward human. Set A, the unedited AI text, landed `unsure` 5 of 5,
+  which is the behaviour criterion 3 wanted from Set B.
+
+Criterion 1, met, with a thin reason. No human text reached 0.70, but H5 (a
+Hacker News comment, 0.634) and H7 (0.620) were the closest, and H7 passes the
+agreement gate. A human text is 0.08 away from the AI label. Every Set A text
+is further away than that, and none of them passes the gate. With 0 failures in
+10, the true rate of wrongly flagging human writing could still be as high as
+about 26%.
+
+Criteria 4 and 5 hold in every trial. They are plain code with no model in
+them, which is why "every time" was the right target.
 
 
 

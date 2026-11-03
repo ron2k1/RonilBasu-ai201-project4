@@ -1,0 +1,1141 @@
+{
+  "label": "before",
+  "trials": 3,
+  "written": "2026-11-03T16:49:42",
+  "rows": [
+    {
+      "name": "set_h_human",
+      "criterion": 1,
+      "trials": [
+        [
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4273,
+            "model_score": 0.3801,
+            "style_score": 0.4509,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "In the context of that, I'm fine with youtube's rule, but we were alre"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5968,
+            "model_score": 0.3541,
+            "style_score": 0.7181,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "The tabs especially looks like a terrible idea. Something that had mor"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4664,
+            "model_score": 0.4337,
+            "style_score": 0.4828,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Definitely states the right problems, but not the right solutions.\n\nTh"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3262,
+            "model_score": 0.2817,
+            "style_score": 0.3484,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "They can take online payment from a bank account (such as after you’ve"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.634,
+            "model_score": 0.3479,
+            "style_score": 0.7771,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "The creation of an enemy and blaming them for all the problem seems to"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.349,
+            "model_score": 0.2992,
+            "style_score": 0.3739,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "One of the many uses of the Greek word pathos in ancient philosophy re"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.6199,
+            "model_score": 0.694,
+            "style_score": 0.5829,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Around the turn of the twenty-first century, what has come to be calle"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3369,
+            "model_score": 0.5103,
+            "style_score": 0.2502,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Low drug loading efficiency is one of the main obstacles hindering the"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3929,
+            "model_score": 0.5685,
+            "style_score": 0.3051,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "In response to the rising cost of cancer drugs, the National Comprehen"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5613,
+            "model_score": 0.5096,
+            "style_score": 0.5872,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Present bioprinting techniques lack the methodology to print with bioa"
+          }
+        ],
+        [
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4273,
+            "model_score": 0.3801,
+            "style_score": 0.4509,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "In the context of that, I'm fine with youtube's rule, but we were alre"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5968,
+            "model_score": 0.3541,
+            "style_score": 0.7181,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "The tabs especially looks like a terrible idea. Something that had mor"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4664,
+            "model_score": 0.4337,
+            "style_score": 0.4828,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Definitely states the right problems, but not the right solutions.\n\nTh"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3262,
+            "model_score": 0.2817,
+            "style_score": 0.3484,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "They can take online payment from a bank account (such as after you’ve"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.634,
+            "model_score": 0.3479,
+            "style_score": 0.7771,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "The creation of an enemy and blaming them for all the problem seems to"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.349,
+            "model_score": 0.2992,
+            "style_score": 0.3739,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "One of the many uses of the Greek word pathos in ancient philosophy re"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.6199,
+            "model_score": 0.694,
+            "style_score": 0.5829,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Around the turn of the twenty-first century, what has come to be calle"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3369,
+            "model_score": 0.5103,
+            "style_score": 0.2502,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Low drug loading efficiency is one of the main obstacles hindering the"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3929,
+            "model_score": 0.5685,
+            "style_score": 0.3051,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "In response to the rising cost of cancer drugs, the National Comprehen"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5613,
+            "model_score": 0.5096,
+            "style_score": 0.5872,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Present bioprinting techniques lack the methodology to print with bioa"
+          }
+        ],
+        [
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4273,
+            "model_score": 0.3801,
+            "style_score": 0.4509,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "In the context of that, I'm fine with youtube's rule, but we were alre"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5968,
+            "model_score": 0.3541,
+            "style_score": 0.7181,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "The tabs especially looks like a terrible idea. Something that had mor"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4664,
+            "model_score": 0.4337,
+            "style_score": 0.4828,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Definitely states the right problems, but not the right solutions.\n\nTh"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3262,
+            "model_score": 0.2817,
+            "style_score": 0.3484,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "They can take online payment from a bank account (such as after you’ve"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.634,
+            "model_score": 0.3479,
+            "style_score": 0.7771,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "The creation of an enemy and blaming them for all the problem seems to"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.349,
+            "model_score": 0.2992,
+            "style_score": 0.3739,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "One of the many uses of the Greek word pathos in ancient philosophy re"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.6199,
+            "model_score": 0.694,
+            "style_score": 0.5829,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Around the turn of the twenty-first century, what has come to be calle"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3369,
+            "model_score": 0.5103,
+            "style_score": 0.2502,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Low drug loading efficiency is one of the main obstacles hindering the"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3929,
+            "model_score": 0.5685,
+            "style_score": 0.3051,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "In response to the rising cost of cancer drugs, the National Comprehen"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5613,
+            "model_score": 0.5096,
+            "style_score": 0.5872,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Present bioprinting techniques lack the methodology to print with bioa"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "set_a_ai",
+      "criterion": 2,
+      "trials": [
+        [
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5805,
+            "model_score": 0.189,
+            "style_score": 0.7763,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I think the idea is interesting but I'd be wary of calling it an impro"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4663,
+            "model_score": 0.3447,
+            "style_score": 0.5271,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "It's pretty straightforward, and honestly a bit different from a deale"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5515,
+            "model_score": 0.2892,
+            "style_score": 0.6827,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I understand why YouTube is doing this, but it feels like a blunt tool"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4728,
+            "model_score": 0.3399,
+            "style_score": 0.5392,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Medieval theories of the emotions developed out of an inherited body o"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5383,
+            "model_score": 0.6928,
+            "style_score": 0.4611,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Background: Prices of new cancer drugs in the United States continue t"
+          }
+        ],
+        [
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5805,
+            "model_score": 0.189,
+            "style_score": 0.7763,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I think the idea is interesting but I'd be wary of calling it an impro"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4663,
+            "model_score": 0.3447,
+            "style_score": 0.5271,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "It's pretty straightforward, and honestly a bit different from a deale"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5515,
+            "model_score": 0.2892,
+            "style_score": 0.6827,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I understand why YouTube is doing this, but it feels like a blunt tool"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4728,
+            "model_score": 0.3399,
+            "style_score": 0.5392,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Medieval theories of the emotions developed out of an inherited body o"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5383,
+            "model_score": 0.6928,
+            "style_score": 0.4611,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Background: Prices of new cancer drugs in the United States continue t"
+          }
+        ],
+        [
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5805,
+            "model_score": 0.189,
+            "style_score": 0.7763,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I think the idea is interesting but I'd be wary of calling it an impro"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4663,
+            "model_score": 0.3447,
+            "style_score": 0.5271,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "It's pretty straightforward, and honestly a bit different from a deale"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5515,
+            "model_score": 0.2892,
+            "style_score": 0.6827,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I understand why YouTube is doing this, but it feels like a blunt tool"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.4728,
+            "model_score": 0.3399,
+            "style_score": 0.5392,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Medieval theories of the emotions developed out of an inherited body o"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5383,
+            "model_score": 0.6928,
+            "style_score": 0.4611,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "Background: Prices of new cancer drugs in the United States continue t"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "set_b_edited",
+      "criterion": 3,
+      "trials": [
+        [
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5962,
+            "model_score": 0.1617,
+            "style_score": 0.8135,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I think the idea's interesting but I'd be wary of calling it an improv"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4367,
+            "model_score": 0.3074,
+            "style_score": 0.5014,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "It's pretty straightforward, and honestly a bit different from a deale"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.6544,
+            "model_score": 0.2473,
+            "style_score": 0.8579,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I understand why YouTube's doing this, but it feels like a blunt tool "
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3653,
+            "model_score": 0.2736,
+            "style_score": 0.4111,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Medieval theories of the emotions developed out of an inherited body o"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4144,
+            "model_score": 0.6501,
+            "style_score": 0.2965,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Background: Prices of new cancer drugs in the United States continue t"
+          }
+        ],
+        [
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5962,
+            "model_score": 0.1617,
+            "style_score": 0.8135,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I think the idea's interesting but I'd be wary of calling it an improv"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4367,
+            "model_score": 0.3074,
+            "style_score": 0.5014,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "It's pretty straightforward, and honestly a bit different from a deale"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.6544,
+            "model_score": 0.2473,
+            "style_score": 0.8579,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I understand why YouTube's doing this, but it feels like a blunt tool "
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3653,
+            "model_score": 0.2736,
+            "style_score": 0.4111,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Medieval theories of the emotions developed out of an inherited body o"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4144,
+            "model_score": 0.6501,
+            "style_score": 0.2965,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Background: Prices of new cancer drugs in the United States continue t"
+          }
+        ],
+        [
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.5962,
+            "model_score": 0.1617,
+            "style_score": 0.8135,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I think the idea's interesting but I'd be wary of calling it an improv"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4367,
+            "model_score": 0.3074,
+            "style_score": 0.5014,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "It's pretty straightforward, and honestly a bit different from a deale"
+          },
+          {
+            "status": 200,
+            "guess": "unsure",
+            "confidence": 0.6544,
+            "model_score": 0.2473,
+            "style_score": 0.8579,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "error": null,
+            "sent": "I understand why YouTube's doing this, but it feels like a blunt tool "
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.3653,
+            "model_score": 0.2736,
+            "style_score": 0.4111,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Medieval theories of the emotions developed out of an inherited body o"
+          },
+          {
+            "status": 200,
+            "guess": "human",
+            "confidence": 0.4144,
+            "model_score": 0.6501,
+            "style_score": 0.2965,
+            "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+            "error": null,
+            "sent": "Background: Prices of new cancer drugs in the United States continue t"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "appeals",
+      "criterion": 4,
+      "trials": [
+        [
+          {
+            "kind": "real",
+            "content_id": "aafed780-53d6-4fb5-9e00-ce324ea12077",
+            "guess": "human",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "3d4fbfb6-389a-4101-be4f-ecfc32c99d3a",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "e853f875-9841-4c2a-b946-7929d76b7ed3",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "994ba5b6-6496-4d0b-bac8-af65f0a24cde",
+            "guess": "human",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "1b8fb8f6-be63-4e64-94ba-c3e7b3491408",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "made_up",
+            "content_id": "00000000-0000-4000-8000-000000000000",
+            "appeal_status": 404,
+            "error": "unknown_content_id",
+            "appeal_lines_with_this_id": 0,
+            "passed": true
+          },
+          {
+            "kind": "made_up",
+            "content_id": "aafed780-53d6-4fb5-9e00-ce324ea12070",
+            "appeal_status": 404,
+            "error": "unknown_content_id",
+            "appeal_lines_with_this_id": 0,
+            "passed": true
+          }
+        ],
+        [
+          {
+            "kind": "real",
+            "content_id": "b1402557-c4d8-4ab0-aa79-903116027294",
+            "guess": "human",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "b9f8ff4d-6561-4e1e-9737-bca62dc8061d",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "8109b432-3953-4abb-a668-a07734a444d8",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "efb0a748-d503-422d-a2a6-45749d350187",
+            "guess": "human",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "ef1ca3ae-af8e-4877-a68c-fae136037811",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "made_up",
+            "content_id": "00000000-0000-4000-8000-000000000000",
+            "appeal_status": 404,
+            "error": "unknown_content_id",
+            "appeal_lines_with_this_id": 0,
+            "passed": true
+          },
+          {
+            "kind": "made_up",
+            "content_id": "b1402557-c4d8-4ab0-aa79-903116027290",
+            "appeal_status": 404,
+            "error": "unknown_content_id",
+            "appeal_lines_with_this_id": 0,
+            "passed": true
+          }
+        ],
+        [
+          {
+            "kind": "real",
+            "content_id": "8e8a22da-9eb6-418d-be9f-d64f56b4d9dd",
+            "guess": "human",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "77406369-1b29-492e-b4e3-9dfd1338cdb1",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "1b519b47-7bbd-4ef2-b658-41b9fe75a3e4",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "759ff7e4-f0f0-4b43-9fbb-f7190c523c11",
+            "guess": "human",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "real",
+            "content_id": "513a0b6b-0b73-4336-9e99-9da1e1e87fc0",
+            "guess": "unsure",
+            "appeal_status": 200,
+            "appeal_response_status": "under_review",
+            "decision_lines": 1,
+            "decision_unchanged_and_decided": true,
+            "appeal_lines": 1,
+            "appeal_line_has_exact_reasoning": true,
+            "appeal_line_after_decision": true,
+            "passed": true
+          },
+          {
+            "kind": "made_up",
+            "content_id": "00000000-0000-4000-8000-000000000000",
+            "appeal_status": 404,
+            "error": "unknown_content_id",
+            "appeal_lines_with_this_id": 0,
+            "passed": true
+          },
+          {
+            "kind": "made_up",
+            "content_id": "8e8a22da-9eb6-418d-be9f-d64f56b4d9d0",
+            "appeal_status": 404,
+            "error": "unknown_content_id",
+            "appeal_lines_with_this_id": 0,
+            "passed": true
+          }
+        ]
+      ]
+    },
+    {
+      "name": "bad_input",
+      "criterion": 5,
+      "trials": [
+        [
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"creator_id\": \"eval_bad_1\"}"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"text\": null, \"creator_id\": \"eval_bad_2\"}"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "(empty text)"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "   \n\n  \t \n "
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"text\": 12345, \"creator_id\": \"eval_bad_5\"}"
+          },
+          {
+            "status": 400,
+            "error": "invalid_json",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "invalid_json",
+            "sent": "[{\"text\": \"In the context of that, I'm fine with youtube's rule, but we were already off on a tangent in the meta discus"
+          },
+          {
+            "status": 413,
+            "error": "text_too_long",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "text_too_long",
+            "sent": "word word word word word word word word word word word word word word "
+          },
+          {
+            "status": 422,
+            "error": "text_too_short",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "text_too_short",
+            "sent": "This has only five words."
+          },
+          {
+            "ping_after_batch": true,
+            "status": 200,
+            "ok": true
+          }
+        ],
+        [
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"creator_id\": \"eval_bad_1\"}"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"text\": null, \"creator_id\": \"eval_bad_2\"}"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "(empty text)"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "   \n\n  \t \n "
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"text\": 12345, \"creator_id\": \"eval_bad_5\"}"
+          },
+          {
+            "status": 400,
+            "error": "invalid_json",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "invalid_json",
+            "sent": "[{\"text\": \"In the context of that, I'm fine with youtube's rule, but we were already off on a tangent in the meta discus"
+          },
+          {
+            "status": 413,
+            "error": "text_too_long",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "text_too_long",
+            "sent": "word word word word word word word word word word word word word word "
+          },
+          {
+            "status": 422,
+            "error": "text_too_short",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "text_too_short",
+            "sent": "This has only five words."
+          },
+          {
+            "ping_after_batch": true,
+            "status": 200,
+            "ok": true
+          }
+        ],
+        [
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"creator_id\": \"eval_bad_1\"}"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"text\": null, \"creator_id\": \"eval_bad_2\"}"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "(empty text)"
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "   \n\n  \t \n "
+          },
+          {
+            "status": 400,
+            "error": "missing_text",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "missing_text",
+            "sent": "{\"text\": 12345, \"creator_id\": \"eval_bad_5\"}"
+          },
+          {
+            "status": 400,
+            "error": "invalid_json",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "invalid_json",
+            "sent": "[{\"text\": \"In the context of that, I'm fine with youtube's rule, but we were already off on a tangent in the meta discus"
+          },
+          {
+            "status": 413,
+            "error": "text_too_long",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "text_too_long",
+            "sent": "word word word word word word word word word word word word word word "
+          },
+          {
+            "status": 422,
+            "error": "text_too_short",
+            "guess": null,
+            "log_lines_added": 1,
+            "last_log_event": "rejected",
+            "last_log_reason": "text_too_short",
+            "sent": "This has only five words."
+          },
+          {
+            "ping_after_batch": true,
+            "status": 200,
+            "ok": true
+          }
+        ]
+      ]
+    }
+  ]
+}
