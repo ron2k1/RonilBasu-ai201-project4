@@ -1,104 +1,112 @@
-# Acceptance criteria — Provenance Guard
+# Acceptance criteria: Provenance Guard
 
-Five criteria that say what "working" means for this service, written in unit 7
-**before** you built it.
+Written in unit 7, before `/submit` returned a single score. Unit 8 runs each
+one three times, and a target only counts as met if it holds in all three.
 
-**All five are yours.** None are given.
+## The test sets these criteria name
 
-An acceptance criterion names a number or something plainly observable. *"The
-detector is accurate"* is an opinion — and perfect AI detection isn't possible
-anyway, so it's an opinion about something nobody can deliver. *"Of 10 pieces I
-wrote myself, at most 1 is labelled high-confidence AI"* is a criterion.
+None of these texts are used to tune the signals in unit 7. They get built in
+unit 8 inside `scenarios.py`, from sources the calibration set never touched.
 
-Under each, write a sentence or two on **why that target**. *"I allow at most 1
-false positive in 10 because on a writing site a wrong accusation costs more
-than a missed detection"* is a real answer.
-
-> Missing your own targets next unit costs you nothing. Setting a target so
-> easy you can't miss it does.
-
----
-
-## Pick numbers you can defend
-
-**Cover at least three of these five areas.** They're prompts, not a form.
-
-| Area | A question it could answer |
-|---|---|
-| False positives | How often may a human's writing get called AI? |
-| Score spread | How far apart should clearly-AI and clearly-human text score? |
-| Label coverage | Is every one of your three labels actually reachable? |
-| The appeal path | Does an appeal always change status and always get recorded? |
-| Bad input | What happens when `text` is missing, empty, or enormous? |
-
-Two things worth knowing before you pick numbers:
-
-- **The expensive mistake is one-sided.** Missing some AI text costs the site a
-  little. Accusing a real writer costs that person a lot. A criterion that
-  treats both errors as equally bad is describing a system nobody would ship.
-- **Unit 8 tests across three trials, and the target has to hold across all
-  three.** Your first signal runs a model, so identical input can score
-  differently twice. A target of "at most 1 in 10" against trials of 2, 1, 2 is
-  a **miss**.
-
----
-## 1.
-
-<!-- Your criterion. It must name a number. -->
-
-
-
-**Why this target:**
-
-
+- **Set H, human (10 pieces).** Real human writing, 80 to 300 words each, all
+  published before 30 November 2022 (the day ChatGPT came out), so none of it
+  can be AI. Five are plain and casual (forum posts). Five are formal
+  (encyclopedia or academic prose).
+- **Set A, clearly AI (5 pieces).** Language-model output with no edits, 80 to
+  300 words, on the same kinds of topics and in the same registers as Set H.
+- **Set B, borderline (5 pieces).** Language-model output that a person then
+  lightly edited: contractions, a typo or two, one sentence split or merged,
+  with no more than 10% of the words changed.
 
 ---
 
-## 2.
+## 1. No human writing gets the AI label
 
-<!-- Your criterion. -->
+Of the 10 pieces in Set H, **0** get `guess: "ai"`, in each of the three
+trials.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 3.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** a wrong accusation lands on one person and nothing
+undoes it. With 10 pieces the smallest failure rate I can even observe is 1 in
+10, and I would not accept a 1 in 10 chance of being called a cheater for
+something I wrote. At this sample size, zero is the only target that means
+rare.
 
 ---
 
-## 4.
+## 2. The detector still catches unedited AI text
 
-<!-- Your criterion. -->
+At least **3 of the 5** pieces in Set A get `guess: "ai"`, and the mean
+`confidence` of Set A is at least **0.30 higher** than the mean of Set H, in
+each of the three trials.
 
-
-
-**Why this target:**
-
-
+**Why this target:** a service that never says "AI" passes criterion 1 for
+free. This criterion stops me from buying zero false positives by making the
+detector useless. I ask for 3 of 5 rather than 5 of 5 because missing some AI
+text is the cheaper mistake, and my thresholds are set to make that trade on
+purpose. The 0.30 gap is about the width an unsure band needs. If the two
+sets sit closer than that, any threshold that leaves room for doubt has
+human and AI text inside the same band, and the score is not separating them.
 
 ---
 
-## 5.
+## 3. All three labels are reachable, and borderline text lands in the middle
 
-<!-- Your criterion. -->
+Across all 20 inputs (Sets H, A and B together), each of `ai`, `unsure` and
+`human` appears **at least 2 times** in every trial. Separately, at least
+**3 of the 5** pieces in Set B get `guess: "unsure"`.
 
+**Why this target:** a label no real text can reach is a label that does not
+exist, and a gap in the bands would hide it. The Set B half checks that the
+unsure label does its job. Lightly edited AI is the honest middle case, and
+if most of it lands at either end, the unsure band is not catching what it is
+there for.
 
+---
 
-**Why this target:**
+## 4. Every appeal changes the status and is recorded
 
+For 5 appeals against real `content_id`s from earlier submissions, **5 of 5**
+return `200` with `status: "under_review"`, and `GET /log` shows both:
 
+- the original decision line, unchanged, still `status: "decided"`, and
+- a later appeal line with the same `content_id`, the exact reasoning text,
+  and `status: "under_review"`.
+
+For 2 appeals with made-up `content_id`s, **2 of 2** return `404` and add no
+appeal line to the log. That is 7 of 7 in each of the three trials.
+
+**Why this target:** the appeal is the only remedy for a criterion 1 failure.
+It is plain code with no model in it, so anything short of every time is a
+bug, and that bug leaves a wrongly accused writer with nothing. The 404 half
+matters because a typo in a content id that quietly "succeeds" looks like a
+filed appeal to the writer and is lost for good.
+
+---
+
+## 5. Bad input is refused cleanly and leaves a trace
+
+These 8 bodies sent to `POST /submit`:
+
+1. no `text` field
+2. `text` is `null`
+3. `text` is `""`
+4. `text` is only spaces and newlines
+5. `text` is a number
+6. the body is a JSON list instead of an object
+7. `text` is 250,000 characters long
+8. `text` is five words
+
+**8 of 8** get a `4xx` status (never a `500`, never a `200` with a label), each
+with a JSON body that has an `error` field, and each writes one `rejected`
+line to the audit log. `POST /ping` still answers after the batch. This holds
+in each of the three trials.
+
+**Why this target:** an input that crashes the route takes the service down
+for every writer, and a `500` tells the person nothing about what to fix. A
+five-word text getting a label would be a guess dressed up as a judgment, so
+it gets refused instead. The log line matters because a refused request that
+leaves no trace is invisible, and an attack that shows up only as an absence
+never gets found.
 
 ---
 
