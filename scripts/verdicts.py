@@ -60,10 +60,13 @@ def trial_cells(rows, t):
 
     bodies = [r for r in rows["bad_input"][t] if not r.get("ping_after_batch")]
     ping = next((r for r in rows["bad_input"][t] if r.get("ping_after_batch")), {})
+    # A 429 is a 4xx with an error field and a rejected line, so without the
+    # last two conditions the rate limiter could pass this criterion by itself.
     clean = sum(1 for r in bodies
                 if isinstance(r.get("status"), int) and 400 <= r["status"] < 500
                 and r.get("error") and r.get("log_lines_added") == 1
-                and r.get("last_log_event") == "rejected")
+                and r.get("last_log_event") == "rejected"
+                and r["status"] != 429 and r.get("last_log_reason") != "rate_limited")
     ping_ok = ping.get("status") == 200 and ping.get("ok") is True
     cells[5] = f"{clean}/{len(bodies)}, ping {'ok' if ping_ok else 'FAILED'}"
     passed[5] = clean == 8 and len(bodies) == 8 and ping_ok

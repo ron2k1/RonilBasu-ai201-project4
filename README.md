@@ -692,7 +692,9 @@ is in `results/verdicts_run_2026-11-03_1649_before.md`.
   came from `claude-opus-5-5`, so this is a different model too.
 - Set B: Set A with light edits made by Claude Code to the criterion's
   recipe. `scenarios.py::check_sets` measures the edits at 4.0% to 5.5% of
-  words changed, under the 10% cap.
+  words changed, under the 10% cap. criteria.md says "a person then lightly
+  edited", so this is a departure: the edits follow the recipe, but a model
+  made them, not a person.
 
 **Criterion 4 needed a runner extension.** The starter `run_eval.py` only
 posts to `/submit`. I extended it (`run_eval.py::run_appeals`) to submit five
@@ -936,15 +938,49 @@ Criterion 3, missed on both halves.
   push toward human. Set A, the unedited AI text, landed `unsure` 5 of 5,
   which is the behaviour criterion 3 wanted from Set B.
 
-Criterion 1, met, with a thin reason. No human text reached 0.70, but H5 (a
-Hacker News comment, 0.634) and H7 (0.620) were the closest, and H7 passes the
-agreement gate. A human text is 0.08 away from the AI label. Every Set A text
-is further away than that, and none of them passes the gate. With 0 failures in
-10, the true rate of wrongly flagging human writing could still be as high as
-about 26%.
+Criterion 1, met, and met for free. The service said `ai` to none of the 20
+texts, which is the exact case criterion 2's reason warns about: a detector
+that never says AI passes criterion 1 without doing anything. The human texts
+were also the closest to the line. H5 (a Hacker News comment) reached 0.634
+and H7 reached 0.620, and H7 passes the agreement gate. With the AI band at
+0.56, H7 and H10 would both get the AI label and still no Set A text would.
+H5 would not, because the gate caps a split text 0.01 under whatever the band
+is (`scoring.py::combine_signals`), and only H7 and H10 of the 20 have both
+signals above 0.5.
+With 0 failures in 10, the true rate of wrongly flagging human writing could
+still be as high as about 26%.
 
-Criteria 4 and 5 hold in every trial. They are plain code with no model in
-them, which is why "every time" was the right target.
+Criteria 4 and 5 hold in every trial, and they are plain code with no model in
+them, so "every time" was the right target. Two limits on what they show:
+
+- All 15 live appeals were against `human` or `unsure` decisions, because
+  nothing reached `ai`. The branch that matters most, the review-pending label
+  that `GET /content` shows on an appealed AI flag, is covered by the unit
+  tests in `tests/test_appeal.py` with a stubbed model score, not by this run.
+- Body 5 (`"text": 12345`) is refused with `missing_text` and "There's no text
+  to look at". There is text; it is the wrong type. The refusal meets the
+  criterion, but it tells the writer the wrong thing to fix.
+
+**Arguing the other side.** I had a fresh Claude agent, given the criteria,
+the raw results and the code but not my reasoning, argue the opposite of each
+verdict. None of the five flipped. Three of its points changed how I report
+them:
+
+1. "MET" for criterion 1 is vacuous, since no input of any kind reached `ai`.
+   The criterion 1 paragraph above now says so.
+2. The criterion 4 run never appealed an `ai` decision. That limit is now
+   listed above.
+3. My checker for criterion 5 counted any `4xx` as clean, so a `429` from the
+   rate limiter could have passed it. None did, since the logged reasons are
+   all the intended ones. `scripts/verdicts.py` now refuses to count a `429`.
+   I confirmed that by swapping one into the saved results: the trial dropped
+   to 7 of 8.
+
+It also pointed out that criteria.md says a person edits Set B, and Claude Code
+made those edits. Its argument that criterion 2 was unfair (a different
+generator than calibration, prompted to sound like Hacker News) did not hold.
+The registers were matched on purpose, and the model signal ran backwards on
+this data, which is a real defect and not a flaw in the test.
 
 
 
