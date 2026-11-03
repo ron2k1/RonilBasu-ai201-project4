@@ -20,6 +20,7 @@ Routes:
     POST /ping        the worked example. Already works. Don't edit it
     POST /submit      ← YOU BUILD THIS (Milestone 3, 4, 5)
     POST /appeal      ← YOU BUILD THIS (Milestone 5)
+    GET  /content/<id> one item's decision and review status (stretch)
     GET  /log         the audit log. Already works
     GET  /health      is the service up, and is the model loaded
 """
@@ -336,15 +337,101 @@ def appeal():
     This is the smallest endpoint in the project and the one that matters most
     to the person on the other end. It's the only thing standing between a
     wrong accusation and nothing at all.
-    """
-    payload = request.get_json(silent=True) or {}
 
-    # TODO: delete this and build the route.
+    Contract: docs/trace.md, section 4. A second appeal on the same item is
+    allowed and logged too; the writer may have more to add.
+    """
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return _refuse(400, "invalid_json",
+                       "Send a JSON object with \"content_id\" and \"reasoning\".")
+
+    content_id = payload.get("content_id")
+    if not isinstance(content_id, str) or not content_id.strip():
+        return _refuse(400, "missing_content_id",
+                       "Send the \"content_id\" you got back when you submitted.")
+    content_id = content_id.strip()
+
+    reasoning = payload.get("reasoning")
+    if not isinstance(reasoning, str) or not reasoning.strip():
+        return _refuse(400, "missing_reasoning",
+                       "Tell us in a sentence or two why the label is wrong, "
+                       "as \"reasoning\".")
+    reasoning = reasoning.strip()
+    if len(reasoning) > config.MAX_APPEAL_CHARS:
+        return _refuse(413, "reasoning_too_long",
+                       f"That's {len(reasoning):,} characters. Please keep it "
+                       f"under {config.MAX_APPEAL_CHARS:,}.")
+
+    history = _history(content_id)
+    if history is None:
+        return _refuse(404, "unknown_content_id",
+                       "We can't find a submission with that content_id. Check "
+                       "it against the one you got back from /submit.",
+                       requested_content_id=content_id[:config.MAX_CREATOR_ID_CHARS])
+
+    decision, appeals = history
+    previous_status = appeals[-1]["status"] if appeals else decision["status"]
+    entry = audit.log_appeal(content_id, decision["creator_id"], reasoning)
+
     return jsonify({
-        "error": "not_implemented",
-        "message": "POST /appeal isn't built yet — see the TODO in app.py.",
-        "you_sent": payload,
-    }), 501
+        "content_id": content_id,
+        "status": entry["status"],
+        "previous_status": previous_status,
+        "message": "Your appeal is recorded, and this post is now waiting for "
+                   "a person to review it. Until then, its label says a "
+                   "review is pending and the automated flag is unconfirmed.",
+        "appealed_at": entry["timestamp"],
+    })
+
+
+def _history(content_id: str):
+    """
+    (decision, appeals) for one item, read back from the log, or None.
+
+    The decision line is the one without an `event` key. Rejections never
+    carry a `content_id`, so a refused request can't make an id look real.
+    """
+    entries = audit.entries_for(content_id)
+    decisions = [e for e in entries if "event" not in e]
+    if not decisions:
+        return None
+    appeals = [e for e in entries if e.get("event") == "appeal"]
+    return decisions[0], appeals
+
+
+# ── Stretch: GET /content/<id> (declared in the README before it was built) ───
+
+@app.get("/content/<content_id>")
+def content_status(content_id):
+    """
+    Where one item stands now: its decision, whether it's under review, and
+    the label a reader would see today. Rebuilt from the log on every call,
+    so it can never disagree with the audit trail.
+
+    The appeal reasoning stays out of the response. It's the writer's message
+    to a reviewer, not something every reader should see.
+    """
+    history = _history(content_id)
+    if history is None:
+        return jsonify({"error": "unknown_content_id",
+                        "message": "No submission has that content_id."}), 404
+
+    decision, appeals = history
+    under_review = bool(appeals)
+    return jsonify({
+        "content_id": content_id,
+        "status": "under_review" if under_review else decision["status"],
+        "guess": decision["guess"],
+        "confidence": decision["combined_score"],
+        "model_score": decision["model_score"],
+        "style_score": decision["style_score"],
+        "label": scoring.REVIEW_PENDING_LABEL if under_review else decision["label"],
+        "original_label": decision["label"],
+        "decided_at": decision["timestamp"],
+        "appeal_count": len(appeals),
+        "last_appealed_at": appeals[-1]["timestamp"] if appeals else None,
+    })
 
 
 # ── Already works ─────────────────────────────────────────────────────────────
