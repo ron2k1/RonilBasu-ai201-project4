@@ -64,14 +64,17 @@ def combine_signals(model_score: float, style_score: float) -> float:
     most machine-like in the set (style 0.96). The average is 0.73, the gate
     sees model at 0.28, and it is capped to 0.69: unsure.
     """
-    average = (config.WEIGHT_MODEL_SIGNAL * model_score
-               + config.WEIGHT_STYLE_SIGNAL * style_score)
+    # Round BEFORE the gate. Gating the raw average and rounding afterwards
+    # let 0.69997 pass the gate and then round up to 0.7000, an AI label with
+    # one signal at or below the floor. The value checked is the value returned.
+    average = round(config.WEIGHT_MODEL_SIGNAL * model_score
+                    + config.WEIGHT_STYLE_SIGNAL * style_score, 4)
 
     both_lean_ai = min(model_score, style_score) > config.AGREEMENT_FLOOR
     if average >= config.AI_THRESHOLD and not both_lean_ai:
-        average = config.AI_THRESHOLD - 0.01
+        average = round(config.AI_THRESHOLD - 0.01, 4)
 
-    return round(min(max(average, 0.0), 1.0), 4)
+    return min(max(average, 0.0), 1.0)
 
 
 # The text a reader sees. Drafts were read back "as the writer" before these

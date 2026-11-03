@@ -35,6 +35,18 @@ def test_one_signal_alone_cannot_reach_the_ai_band(model, style):
         assert combined == CAP
 
 
+@pytest.mark.parametrize("style", [0.8, 0.85, 0.9, 0.95, 1.0])
+def test_no_model_score_at_or_below_the_floor_reaches_ai_even_at_the_rounding_edge(style):
+    # Both signals arrive rounded to 4 places, so walk every 4-place model
+    # score up to the floor. An average a hair under 0.70 that slipped past
+    # the gate and then rounded up to 0.7000 is the case this guards.
+    for i in range(0, 5001):
+        model = i / 10_000
+        combined = scoring.combine_signals(model, style)
+        assert combined < config.AI_THRESHOLD, (model, style, combined)
+        assert scoring.score_to_label(combined)[0] != "ai"
+
+
 def test_the_gate_leaves_a_split_that_is_already_unsure_alone():
     # model low, style middling: average 0.5, nowhere near AI, so no cap
     assert scoring.combine_signals(0.2, 0.65) == pytest.approx(0.2 / 3 + 0.65 * 2 / 3, abs=1e-4)
