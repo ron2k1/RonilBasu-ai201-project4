@@ -27,11 +27,19 @@ Routes:
 import uuid
 
 from flask import Flask, jsonify, request
+from werkzeug.exceptions import RequestEntityTooLarge
 
 import audit
 import config
+import detector
+import scoring
+import stylometry
 
 app = Flask(__name__)
+
+# Flask turns any body over this into a 413 before a route runs. The handler
+# below makes that 413 JSON and leaves a trace, like every other refusal.
+app.config["MAX_CONTENT_LENGTH"] = config.MAX_REQUEST_BYTES
 
 
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
@@ -198,18 +206,117 @@ def submit():
     Worth deciding early, because unit 8's attack set will decide it for you:
     what should this do when `text` is missing, empty, or enormous? A crash on
     a malformed input is one of the most common real failures there is.
-    """
-    payload = request.get_json(silent=True) or {}
 
-    # TODO: delete this and build the route.
+    The answer is in docs/trace.md, section 4: every bad body is a 4xx with a
+    JSON `error`, and a `rejected` line in the log.
+    """
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return _refuse(400, "invalid_json",
+                       "Send a JSON object with \"text\" and \"creator_id\".")
+
+    creator_id = _clean_creator_id(payload.get("creator_id"))
+    raw_text = payload.get("text")
+
+    if not isinstance(raw_text, str) or not raw_text.strip():
+        return _refuse(400, "missing_text",
+                       "There's no text to look at. Send the writing as \"text\".",
+                       creator_id=creator_id)
+    if creator_id is None:
+        return _refuse(400, "missing_creator_id",
+                       f"\"creator_id\" must be a non-empty string of at most "
+                       f"{config.MAX_CREATOR_ID_CHARS} characters.")
+
+    text = raw_text.strip()
+    if len(text) > config.MAX_TEXT_CHARS:
+        return _refuse(413, "text_too_long",
+                       f"That's {len(text):,} characters. The limit is "
+                       f"{config.MAX_TEXT_CHARS:,}.",
+                       creator_id=creator_id, text_chars=len(text))
+
+    word_count = len(stylometry.words(text))
+    if word_count < config.MIN_WORDS:
+        return _refuse(422, "text_too_short",
+                       f"This is {word_count} words. We need at least "
+                       f"{config.MIN_WORDS} to say anything useful about how it "
+                       f"was written, so we haven't labelled it.",
+                       creator_id=creator_id, word_count=word_count)
+
+    try:
+        model_score = detector.model_signal(text)
+    except (detector.DetectorUnavailable, ValueError) as exc:
+        # ValueError is GPT-2 finding too few tokens. MIN_WORDS should stop
+        # that first, so reaching here means the two disagree about length.
+        return _refuse(503, "detector_unavailable",
+                       "We couldn't check this right now. Nothing was decided "
+                       "about your writing. Please try again later.",
+                       creator_id=creator_id, detail=type(exc).__name__)
+
+    # Milestone 3: one signal. Confidence and label are placeholders until
+    # the second signal and the combining rule exist.
+    style_score = None
+    confidence = model_score
+    guess, label = scoring.score_to_label(confidence)
+
+    content_id = str(uuid.uuid4())
+    audit.log_decision(
+        content_id=content_id,
+        creator_id=creator_id,
+        guess=guess,
+        model_score=model_score,
+        style_score=style_score,
+        combined_score=confidence,
+        label=label,
+        status="decided",
+        word_count=word_count,
+        text_preview=text[:80],
+    )
+
     return jsonify({
-        "error": "not_implemented",
-        "message": "POST /submit isn't built yet — see the TODO in app.py.",
-        "you_sent": {
-            "text_length": len(payload.get("text", "")),
-            "creator_id": payload.get("creator_id"),
-        },
-    }), 501
+        "content_id": content_id,
+        "creator_id": creator_id,
+        "guess": guess,
+        "confidence": confidence,
+        "label": label,
+        "model_score": model_score,
+        "style_score": style_score,
+        "status": "decided",
+    })
+
+
+def _clean_creator_id(value):
+    """The creator id if it's usable, else None."""
+    if not isinstance(value, str):
+        return None
+    value = value.strip()
+    if not value or len(value) > config.MAX_CREATOR_ID_CHARS:
+        return None
+    return value
+
+
+def _refuse(status: int, error: str, message: str, creator_id=None, **extra):
+    """
+    Turn a request away with a JSON reason, and leave a trace in the log.
+
+    A refused request that writes nothing looks exactly like no request at
+    all, so every refusal gets a `rejected` line.
+    """
+    audit.log_rejection(
+        creator_id=creator_id or "unknown",
+        reason=error,
+        route=request.path,
+        http_status=status,
+        **extra,
+    )
+    return jsonify({"error": error, "message": message}), status
+
+
+@app.errorhandler(RequestEntityTooLarge)
+def request_too_large(exc):
+    """Bodies over MAX_REQUEST_BYTES never reach a route. Refuse them in JSON."""
+    return _refuse(413, "request_too_large",
+                   f"That request is over {config.MAX_REQUEST_BYTES // 1024} KB. "
+                   f"The text limit is {config.MAX_TEXT_CHARS:,} characters.")
 
 
 @app.post("/appeal")

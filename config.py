@@ -47,6 +47,28 @@ DETECTOR_MODEL = os.getenv("AI201_DETECTOR_MODEL", "gpt2")
 DETECTOR_MAX_TOKENS = 400
 
 
+# ─── What the routes accept (Milestone 3) ────────────────────────────────────
+# Decided in docs/trace.md before the route existed. Every refusal is a 4xx
+# with a JSON `error` field and a `rejected` line in the audit log.
+
+# Fewer words than this and neither signal has anything to measure. GPT-2's
+# perplexity on a dozen words is noise, and one sentence has no length spread.
+# The writer gets "too short to judge" and no label at all, which is better
+# than a guess that reads like a verdict.
+MIN_WORDS = 30
+
+# About 3,500 words. Longer than nearly any post, and signal one only reads
+# the first 400 tokens anyway, so more text buys no accuracy.
+MAX_TEXT_CHARS = 20_000
+
+# Flask refuses any request body bigger than this before the route runs.
+# Generous enough that MAX_TEXT_CHARS of multi-byte text still fits.
+MAX_REQUEST_BYTES = 256 * 1024
+
+MAX_CREATOR_ID_CHARS = 200
+MAX_APPEAL_CHARS = 5_000
+
+
 # ─── Scoring (Milestone 4) ───────────────────────────────────────────────────
 # How much each signal counts toward the combined score.
 #
