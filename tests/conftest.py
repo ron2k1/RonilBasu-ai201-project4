@@ -50,4 +50,8 @@ def fixed_model(monkeypatch):
 @pytest.fixture
 def client(log_path, fixed_model):
     app_module.app.config["TESTING"] = True
+    # The limiter keeps its counts in memory for the life of the process, so
+    # without this every test after the first few would start rate limited.
+    if hasattr(app_module.limiter, "reset"):
+        app_module.limiter.reset()
     return app_module.app.test_client()

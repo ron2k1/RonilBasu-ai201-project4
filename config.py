@@ -174,10 +174,18 @@ AI_THRESHOLD = 0.70
 # an hour, and a script sending a thousand variations to map your thresholds.
 # Your README has to say why your numbers and not others.
 
-RATE_LIMITING_ENABLED = os.getenv("AI201_RATE_LIMITS", "0") == "1"
+RATE_LIMITING_ENABLED = True
 
-RATE_LIMIT_PER_MINUTE = 10
-RATE_LIMIT_PER_DAY = 200
+# Counted per creator_id (the address only when a body has none). Five a
+# minute covers a writer fixing a typo and resubmitting a few times; fifty a
+# day is several times what one person posts. A script mapping the bands needs
+# hundreds of probes and gets fifty a day per id. Reasons in the README.
+RATE_LIMIT_PER_MINUTE = 5
+RATE_LIMIT_PER_DAY = 50
+
+# A fixed window resets on the minute, so a script could send five at 0:59 and
+# five more at 1:00. The moving window counts the last 60 seconds instead.
+RATE_LIMIT_STRATEGY = "moving-window"
 
 # Flask-Limiter warns loudly without this. In-memory is right for one laptop
 # and wrong for anything real — a restart forgets every count, and two copies

@@ -359,7 +359,7 @@ def run_flood(args):
     for i in range(1, args.flood + 1):
         try:
             response = requests.post(f"{args.url}/submit",
-                                     json={"text": FLOOD_TEXT,
+                                     json={"text": args.flood_text,
                                            "creator_id": args.creator},
                                      timeout=args.timeout)
             codes.append(str(response.status_code))
@@ -385,11 +385,18 @@ def run_flood(args):
     config.RESULTS_DIR.mkdir(exist_ok=True)
     stamp = dt.datetime.now().strftime("%Y-%m-%d_%H%M")
     path = config.RESULTS_DIR / f"flood_{stamp}.md"
+    n = 2
+    while path.exists():  # two floods in one minute must not overwrite each other
+        path = config.RESULTS_DIR / f"flood_{stamp}_{n}.md"
+        n += 1
+    which_text = ("the default flood text" if args.flood_text == FLOOD_TEXT
+                  else "text given with --flood-text")
     path.write_text(
         f"# Rate limit check\n\n"
         f"- Produced by: `run_attacks.py::run_flood`\n"
         f"- {len(codes)} submissions as `{args.creator}` · "
         f"{dt.datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
+        f"- Sent: {which_text}, {len(args.flood_text.split())} words\n"
         f"- Rate limited: **{limited}**\n\n"
         f"```\n{run}\n```\n",
         encoding="utf-8")
@@ -406,6 +413,9 @@ def main():
                              "creator_id and print the status codes (Milestone 1)")
     parser.add_argument("--creator", default="flood_tester",
                         help="who --flood submits as")
+    parser.add_argument("--flood-text", default=FLOOD_TEXT,
+                        help="what --flood sends; the default is 27 words, which "
+                             "a service with a 30-word minimum refuses with 422")
     parser.add_argument("--url", default=DEFAULT_URL)
     parser.add_argument("--label", default="", help="e.g. before / after")
     parser.add_argument("--timeout", type=float, default=90.0,

@@ -554,24 +554,85 @@ an average of 0.69997 slipped past the agreement gate and then rounded up to
 
 ## Rate Limiting
 
-**My limits:** ___ per minute, ___ per day
+**My limits:** 5 per minute, 50 per day
 
 **Why those numbers and not others:**
-<!-- Think about two people: a real writer submitting their own work a few
-     times an hour, and a script sending a thousand variations to map your
-     thresholds. Your numbers have to be liveable for the first and hostile to
-     the second. -->
 
-**What a caller counts as:** <!-- per address, or per creator_id? They fail
-differently — one script can look like a thousand callers, and one household
-can look like one. -->
+A writer posting their own work submits a piece, maybe spots a typo, and
+submits it again. Five in one minute leaves room for that plus a double-click.
+Fifty in a day is more than anyone posts by hand.
+
+A script mapping my bands is the opposite case. Every response hands back the
+combined score and both signal scores, so each probe tells the script a lot.
+It still needs hundreds of them to find where 0.45 and 0.70 sit for the kind
+of text it wants to pass. At fifty a day, one id gets fifty probes. The
+starter's 200 a day would have given it four times that.
+
+The two limits do different jobs. The minute limit stops a burst. The day
+limit stops a patient script: five a minute alone still allows 7,200 a day to
+anything that sends one every twelve seconds.
+
+The window is a moving one (`RATE_LIMIT_STRATEGY = "moving-window"` in
+`config.py`). A fixed window resets on the minute, which lets a script send
+five at 0:59 and five more at 1:00.
+
+**What a caller counts as:** the `creator_id` in the request body. When a body
+has no usable `creator_id` (the field is missing or blank, or the body isn't a
+JSON object), it counts against the caller's address instead.
+
+The two choices fail in different ways. `creator_id` is whatever the caller
+types, so a script that changes it on every request gets a fresh budget each
+time. Against that script, this limit does nothing. Counting per address would
+stop it, but would put a whole dorm network behind one budget. On this laptop
+it would also put every caller behind `127.0.0.1`, so `run_eval.py` would
+throttle itself. There are no accounts in this service, so per-creator is the
+only identity I have that belongs to a writer. That means id rotation walks
+straight past the limit, which is listed under What's Still Broken.
+
+Refused requests count against the budget too. Flask-Limiter checks the limit
+before `/submit` runs, so a request that would have got a `422` still uses up
+one of the five.
 
 **The run of status codes when I pushed past it:**
 
-<!-- python run_attacks.py --flood 15 -->
+```
+python run_attacks.py --flood 15 --creator flood_writer --flood-text "<39 words>"
 
+200 200 200 200 200 429 429 429 429 429 429 429 429 429 429
 ```
 
+From `results/flood_2026-11-03_1642.md`. Five decisions, then ten refusals.
+
+The first run used the runner's built-in flood text, which is 27 words. My
+`/submit` refuses anything under 30 words with `422 text_too_short`, so that
+run never reached a `200`:
+
+```
+python run_attacks.py --flood 15
+
+422 422 422 422 422 429 429 429 429 429 429 429 429 429 429
+```
+
+From `results/flood_2026-11-03_1641.md`. The `429`s still start at the sixth
+request, which is the refused-requests-count point above, shown live. I added
+the `--flood-text` option to `run_attacks.py` so the run of `200`s could use a
+text long enough to get a decision. The default text is unchanged.
+
+`GET /log?limit=30` after both floods returned all 30 requests:
+
+| creator | what the log says | lines |
+|---|---|---|
+| `flood_tester` | `rejected`, `text_too_short` | 5 |
+| `flood_tester` | `rejected`, `rate_limited` | 10 |
+| `flood_writer` | decision, `guess: "unsure"` | 5 |
+| `flood_writer` | `rejected`, `rate_limited` | 10 |
+
+All five decision lines carry the nine fields (`timestamp`, `content_id`,
+`creator_id`, `guess`, `model_score`, `style_score`, `combined_score`,
+`label`, `status`). A `429` line names the limit it hit:
+
+```json
+{"timestamp": "2026-11-03T21:42:07+00:00", "creator_id": "flood_writer", "event": "rejected", "status": "rejected", "reason": "rate_limited", "limit": "5 per 1 minute"}
 ```
 
 ---

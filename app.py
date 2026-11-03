@@ -100,6 +100,7 @@ if config.RATE_LIMITING_ENABLED:
         key_func=rate_limit_key,
         app=app,
         storage_uri=config.RATE_LIMIT_STORAGE,
+        strategy=config.RATE_LIMIT_STRATEGY,
         default_limits=[],
     )
 
@@ -161,7 +162,7 @@ def health():
 # ── YOU BUILD THIS ────────────────────────────────────────────────────────────
 
 @app.post("/submit")
-# @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
+@limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
 def submit():
     """
     Take a piece of text, decide about it, log the decision, answer.
