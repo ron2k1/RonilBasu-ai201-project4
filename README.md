@@ -34,6 +34,19 @@
 
 <!-- ═══════════════════════ UNIT 7 — THE BUILD ═══════════════════════ -->
 
+## Stretch Feature (declared before building)
+
+`GET /content/<content_id>` returns one item's current state: its original
+decision plus every appeal against it, and the status the latest line leaves
+it in. A writer who appealed can check where their appeal stands without
+reading the whole log.
+
+The plan written before any code (the path, both signals and their blind
+spots, the false-positive trace and the endpoint contract) is in
+[docs/trace.md](docs/trace.md).
+
+---
+
 ## What This Does
 
 <!-- The path a submission takes, from arriving to the label a reader sees.
