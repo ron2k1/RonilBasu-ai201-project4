@@ -74,6 +74,39 @@ def combine_signals(model_score: float, style_score: float) -> float:
     return round(min(max(average, 0.0), 1.0), 4)
 
 
+# The text a reader sees. Drafts were read back "as the writer" before these
+# were settled (README, How I Used AI): "strong signs" read as an accusation,
+# so the AI label says "flagged as likely"; the unsure label made a careful
+# writer think they should roughen their style, so it now says nothing needs
+# to change; and a bare "review pending" read like an admission, so the
+# pending text says the flag is unconfirmed.
+
+HUMAN_LABEL = (
+    "Every post here gets an automated check for AI-generated writing. "
+    "This one found nothing that points to AI, so we think a person wrote it."
+)
+
+UNSURE_LABEL = (
+    "Our automated check couldn't tell whether a person or an AI wrote this. "
+    "That happens with a lot of real writing, especially plain or very "
+    "polished writing. It is not a finding against the writer. Nothing needs "
+    "to change, and the post stays up as normal."
+)
+
+AI_LABEL = (
+    "Our automated check flagged this text as likely AI-generated. Checks "
+    "like this can be wrong, including about writing people did themselves. "
+    "If you wrote this, you can ask for a person to review it."
+)
+
+# Shown by GET /content/<id> in place of the label once the writer appeals.
+REVIEW_PENDING_LABEL = (
+    "The writer has asked for a person to review the automated flag on this "
+    "post. Until that review is finished, the flag is unconfirmed and is not "
+    "a finding against the writer."
+)
+
+
 def score_to_label(score: float) -> tuple[str, str]:
     """
     Turn a score into a guess and the text a reader actually sees.
@@ -99,13 +132,16 @@ def score_to_label(score: float) -> tuple[str, str]:
     written every word themselves. Your breakout asks your group what they'd
     think if they got it on their own work. That question is the whole
     milestone.
+
+    Bands (config.py): below HUMAN_THRESHOLD (0.45) is human, AI_THRESHOLD
+    (0.70) and above is AI, everything between is unsure. Each boundary
+    belongs to exactly one band, so there is no gap and no overlap.
     """
-    # TODO: replace this — thresholds are in config.py
     if score >= config.AI_THRESHOLD:
-        return "ai", "PLACEHOLDER — write the high-confidence AI label."
-    if score <= config.HUMAN_THRESHOLD:
-        return "human", "PLACEHOLDER — write the high-confidence human label."
-    return "unsure", "PLACEHOLDER — write the unsure label."
+        return "ai", AI_LABEL
+    if score < config.HUMAN_THRESHOLD:
+        return "human", HUMAN_LABEL
+    return "unsure", UNSURE_LABEL
 
 
 def label_ranges() -> list[tuple[str, str]]:
