@@ -153,3 +153,14 @@ Success, `200`:
 Refusals: `400 invalid_json`, `400 missing_content_id`, `400 missing_reasoning`,
 `413 reasoning_too_long`, and `404 unknown_content_id` when no decision exists
 for that id. A 404 writes nothing to the log as an appeal.
+
+### Added after the build
+
+Two more refusals turned up while building, in the same `{"error", "message"}`
+shape and with a `rejected` log line. Nothing about the writing is decided in
+either case.
+
+| Status | `error` | Route | When |
+|---|---|---|---|
+| 413 | `request_too_large` | any | the whole body is over `MAX_REQUEST_BYTES`. Flask refuses it when the route first reads the body |
+| 503 | `detector_unavailable` | `/submit` | GPT-2 could not run on the text |
