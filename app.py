@@ -38,8 +38,9 @@ import stylometry
 
 app = Flask(__name__)
 
-# Flask turns any body over this into a 413 before a route runs. The handler
-# below makes that 413 JSON and leaves a trace, like every other refusal.
+# Flask refuses any body over this with a 413 the moment a route reads it,
+# before the route's own checks run. The handler below makes that 413 JSON
+# and leaves a trace, like every other refusal.
 app.config["MAX_CONTENT_LENGTH"] = config.MAX_REQUEST_BYTES
 
 
@@ -312,7 +313,7 @@ def _refuse(status: int, error: str, message: str, creator_id=None, **extra):
 
 @app.errorhandler(RequestEntityTooLarge)
 def request_too_large(exc):
-    """Bodies over MAX_REQUEST_BYTES never reach a route. Refuse them in JSON."""
+    """Bodies over MAX_REQUEST_BYTES are refused when the route reads them. Refuse them in JSON."""
     return _refuse(413, "request_too_large",
                    f"That request is over {config.MAX_REQUEST_BYTES // 1024} KB. "
                    f"The text limit is {config.MAX_TEXT_CHARS:,} characters.")
@@ -368,7 +369,7 @@ def appeal():
         return _refuse(404, "unknown_content_id",
                        "We can't find a submission with that content_id. Check "
                        "it against the one you got back from /submit.",
-                       requested_content_id=content_id[:config.MAX_CREATOR_ID_CHARS])
+                       requested_content_id=content_id[:config.MAX_LOGGED_ID_CHARS])
 
     decision, appeals = history
     previous_status = appeals[-1]["status"] if appeals else decision["status"]

@@ -70,12 +70,18 @@ MIN_WORDS = 30
 # the first 400 tokens anyway, so more text buys no accuracy.
 MAX_TEXT_CHARS = 20_000
 
-# Flask refuses any request body bigger than this before the route runs.
-# Generous enough that MAX_TEXT_CHARS of multi-byte text still fits.
+# Flask refuses any request body bigger than this with a 413 the moment a
+# route reads it, before any of the route's own checks run. Generous enough
+# that MAX_TEXT_CHARS of multi-byte text still fits.
 MAX_REQUEST_BYTES = 256 * 1024
 
 MAX_CREATOR_ID_CHARS = 200
 MAX_APPEAL_CHARS = 5_000
+
+# A refused appeal logs the id it tried, cut to this length. A real id is a
+# 36-character UUID, so this keeps typos whole while a junk id the size of
+# the request can't bloat the log.
+MAX_LOGGED_ID_CHARS = 200
 
 
 # ─── Signal two: the style signal (Milestone 4) ──────────────────────────────
