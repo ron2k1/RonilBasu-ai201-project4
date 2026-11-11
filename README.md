@@ -556,6 +556,48 @@ an average of 0.69997 slipped past the agreement gate and then rounded up to
   the letter names most directly is untested here. Both go to unit 8's "What's
   Still Broken" if the attack set confirms them.
 
+**Unit 8**
+
+Claude Code ran unit 8 at my request too: the rate limiter and the audit log,
+both attack runs, the eval, the diagnoses, the threshold change (made
+test-first) and these write-ups. The suite is now 108 tests. I didn't have the
+staff attack set, so Claude Code found it in a TF's public course repo on
+GitHub and matched it by hash against two other public copies (Attack Run —
+Before). Before that turned up, a separate Opus agent wrote a substitute set
+without reading the service's code. WebFetch would only return summaries, so
+it fetched its human texts with Python's `urllib`, which its `SOURCES.md`
+says. Two of its malformed requests found the only crashes in any run.
+
+Review agents read the work before it was pushed. The rate-limit review found
+three holes (Rate Limiting). A review of the eval scripts found three checks
+that could pass a broken run, and they were tightened in commit `c64c5c8`.
+
+**Moment 3**
+
+- *What I asked for:* Claude Code gave a fresh agent FP03, the response, both
+  signal scores and the five pipeline stages, and asked for three causes at
+  different stages without a ranking.
+- *What came back:* one cause at signal one, one at signal two and one at the
+  combining rule. All three sounded right, and the third came with a number
+  that sounded decisive: an equal-weight average would have kept FP03 out of
+  the AI band.
+- *What I changed:* each cause was tested against a control, the unedited AI
+  paragraph, before any fix was picked (Which one it was). The test picked
+  signal one. The agent had the vocabulary measure backwards for my anchors,
+  and the equal-weight fix works by moving weight onto the signal that got the
+  order wrong. So equal weights were dropped as the improvement, and the
+  write-up names signal one as the cause the AI line doesn't touch.
+
+**Moment 4**
+
+- *What I asked for:* a fresh agent with the criteria, the raw results and the
+  code, but not my reasoning, argued the opposite of every before-run verdict.
+- *What came back:* none of the five flipped. It found that my criterion 5
+  checker would have counted a `429` from the rate limiter as a clean refusal.
+- *What I changed:* `scripts/verdicts.py` now refuses a `429`, criterion 1 is
+  called met vacuously, and the untested AI-label appeal is listed (Run Log
+  and Verdicts, Arguing the other side).
+
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
 ---
@@ -1457,8 +1499,9 @@ score, so it needs a new calibration pass and new held-out test sets after it.
 
 **Attacks still getting through**
 
-- **Evasion, 9 rows, and criterion 2 (signal one).** The detector can't flag
-  the staff set's AI paragraph even unedited, and no Set A text got `ai`. What
+- **Evasion, EV01 to EV07 and EV09, and criterion 2 (signal one).** The
+  detector can't flag the staff set's AI paragraph even unedited, and no Set A
+  text got `ai`. What
   I'd do: replace GPT-2 as the reference model with one trained on recent
   text, refit `MODEL_PPL_MIDPOINT` on a fresh calibration set, and keep the
   gate. Why I stopped: it is a second change to scoring and needs the full
