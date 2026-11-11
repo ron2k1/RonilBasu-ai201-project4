@@ -773,8 +773,9 @@ Four rows need a note.
   and the limiter refused the other seven. Like the starter's flood text in
   Rate Limiting, it never reaches a decision.
 - MF07 is HELD, but its log line has `"word_count": 0`. The word counter
-  (`stylometry.words`) only matches Latin letters and digits, so Arabic text of
-  any length is refused as too short.
+  (`stylometry.words`) only matches the ASCII letters a to z, digits and
+  apostrophes, so Arabic text of any length is refused as too short. Accented
+  Latin letters break words too: "café" counts as `caf`.
 - FP08 ("Went for a run. Legs hurt. Worth it.") is HELD because nobody was
   accused. Nothing was checked either: a real post under 30 words gets a
   refusal, not a label.
@@ -1300,8 +1301,8 @@ them:
 3. My checker for criterion 5 counted any `4xx` as clean, so a `429` from the
    rate limiter could have passed it. None did, since the logged reasons are
    all the intended ones. `scripts/verdicts.py` now refuses to count a `429`.
-   I confirmed that by swapping one into the saved results: the trial dropped
-   to 7 of 8.
+   Claude Code tested that by swapping one into the saved results: the trial
+   dropped to 7 of 8.
 
 It also pointed out that criteria.md says a person edits Set B, and Claude Code
 made those edits. Its argument that criterion 2 was unfair (a different
@@ -1449,17 +1450,112 @@ went straight through it.
 
 ## What's Still Broken
 
-<!-- For each attack still getting through and each criterion still missed:
-     what you'd do, and why you stopped. -->
+Two reasons for stopping come up again and again, so they are stated once
+here. The unit allows one change to the system beyond the rate limiter and the
+log, and that went to the AI line. And any change to a signal moves every
+score, so it needs a new calibration pass and new held-out test sets after it.
 
+**Attacks still getting through**
 
+- **Evasion, 9 rows, and criterion 2 (signal one).** The detector can't flag
+  the staff set's AI paragraph even unedited, and no Set A text got `ai`. What
+  I'd do: replace GPT-2 as the reference model with one trained on recent
+  text, refit `MODEL_PPL_MIDPOINT` on a fresh calibration set, and keep the
+  gate. Why I stopped: it is a second change to scoring and needs the full
+  calibration redone.
+- **Dilution, PI01 to PI03 (signal one).** Unusual text in front of AI text
+  pulls the model score down. What I'd do: score each paragraph on its own and
+  take the most AI-like one that is long enough to score, so a preamble can't
+  dilute the body. Why I stopped: on this set it reaches one row of three.
+  PI03's AI paragraph is 33 words and could be scored alone, PI02's is 27,
+  under the 30-word floor, and PI01 has no paragraph break at all. It also
+  changes what both signals see, so it needs its own calibration pass.
+- **Repetition, EV10 (signal two).** Repeated text drives vocabulary variety
+  down, and my anchors read low variety as human. What I'd do: drop repeated
+  sentences before measuring style. Why I stopped: the one-change rule.
+- **The punctuation measure.** It gives 1.000 to every plain text, human or
+  AI, so on plain text it adds a flat third to the style score. It is part of
+  why FP03's style score was high. What I'd do: score zero uncommon
+  punctuation as no evidence (0.5), then rerun calibration to see what that
+  does to human texts that use punctuation. Why I stopped: the one-change
+  rule, and it moves every style score.
+
+**Criteria still missed**
+
+- **Criterion 2:** the evasion item above. Raising the line moved it further
+  away.
+- **Criterion 3:** no `ai` label in the eval, for criterion 2's reason, and
+  Set B moves at random along the spread measure, where one split or merged
+  sentence swings the coefficient of variation. What I'd do: measure spread
+  with something one sentence can't swing, such as the interquartile range of
+  sentence lengths. Why I stopped: the one-change rule.
+- **Criterion 1** is met, and still met by a detector that said `ai` to
+  nothing in the eval. That stays true after the change.
+
+**Holes the runs found outside the detector**
+
+- **Two requests crash the route and leave no log line** (substitute MR16 and
+  MR17). A lone surrogate makes the tokenizer raise `TypeError`, and deep
+  nesting makes `json.loads` raise `RecursionError`. What I'd do: refuse text
+  that can't be encoded as UTF-8 with a `422` before scoring, and catch
+  `RecursionError` in `_json_body` as `400 invalid_json`, both with a
+  `rejected` line. Why I stopped: that is input validation, a second system
+  change. It is the first thing I'd fix next, since these are the only
+  requests in any run that leave no trace in the log.
+- **Non-English text is refused as too short** (MF07, and the substitute's
+  Japanese ED04, both 0 words). `stylometry.words` only matches the ASCII
+  letters a to z, digits and apostrophes. What I'd do: refuse non-English text
+  with a reason that says so, because GPT-2 and the style anchors were only
+  calibrated on English and a label would mean nothing. Why I stopped: a route
+  change, under the one-change rule.
+- **Short real posts get no check** (FP08). Anything under 30 words is
+  refused, which accuses no one and labels nothing. I'd leave the refusal: under
+  30 words neither signal has enough to count, and a site should show no label
+  on a post the check can't read.
+- **Id rotation walks past the rate limit** (Rate Limiting said it would be
+  listed here). A script that changes `creator_id` on every request gets a
+  fresh budget each time. What I'd do: add a loose per-address ceiling above
+  the per-creator limit, high enough for a shared dorm network, with the eval's
+  localhost address exempted. Why I stopped: there are no accounts to tie a
+  budget to, and who shares an address budget is a design decision, not a
+  one-line change.
+- **Every response hands back both signal scores.** That tells a probing script
+  how far it is from each line, and the rate limit only slows it down. What I'd
+  do: give readers the label only and keep the scores for reviewers on
+  `GET /content`. Why I stopped: unit 7's contract requires `model_score` and
+  `style_score` in the `/submit` response.
+- **Wrong-type text gets the wrong reason.** `"text": 12345` is refused with
+  `missing_text` ("There's no text to look at"). What I'd do: a separate
+  `invalid_text` reason. Why I stopped: the refusal is still clean and logged,
+  and it is a route change.
+
+**What unit 7 said would come here**
+
+- **A flagged writer gets no reason.** Unit 7's second agent asked for reasons
+  in plain terms. FP03 shows why: the true reason is that GPT-2 finds the
+  writer's English predictable, and the label can't say that. What I'd do: one
+  sentence on an AI label naming which measures drove it, read back by a fresh
+  agent as the writer, the way the labels were. Why I stopped: a reason that
+  helps a writer also tells a script what to change, so it is its own design
+  problem.
+- **No recorded outcome when a review withdraws a flag.** An appeal sets
+  `under_review`, and nothing closes it. What I'd do: a reviewer route that
+  records `upheld` or `withdrawn` and changes the label. Why I stopped: it needs
+  reviewer authentication, which this service doesn't have.
+- **Second-language writing is barely tested.** Unit 7's calibration had none.
+  The staff set had one text, FP03, and it was the worst outcome. A held-out
+  set of second-language writing is what criterion 1 needs next.
+- **The AI-label appeal is still only covered by unit tests.** Nothing in the
+  eval reaches `ai`. The Sample Run essay does (0.7591), and it is the text to
+  add to `run_eval.py::run_appeals`.
 
 **The trade I'd make if this ran for real:**
 
-<!-- Two sentences. Fewer wrong accusations means more AI text getting through.
-     Say which way you'd go and WHO PAYS FOR IT. -->
-
-
+I'd keep the AI band high and let more AI text through as `unsure`, because a
+wrong `ai` label lands on one named writer while a missed one is spread thin
+across every reader. Readers pay for that with less warning, and so do honest
+writers, whose real work sits beside AI text that carries the same `unsure`
+label they do.
 
 <!-- ═════════════════════════════════════════════════════════════════════
 
