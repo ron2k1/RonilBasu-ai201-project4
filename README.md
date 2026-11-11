@@ -1315,22 +1315,135 @@ this data, which is a real defect and not a flaw in the test.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** `AI_THRESHOLD` in `config.py`, from 0.70 to 0.75. Nothing
+else in the system moved. The gate's cap is `AI_THRESHOLD − 0.01`, so it went
+from 0.69 to 0.74 with the line. The change was made test-first (commit
+`3d57f16`). Two regression tests use logged numbers: FP03's (0.6173, 0.7464)
+has to come out `unsure`, and the Sample Run essay's (0.6033, 0.837) has to
+stay `ai`.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** the worst outcome, FP03. Real human writing
+landed in the AI band at 0.7034. The diagnosis puts the fault in signal one,
+and the fix it names is a reference model trained on text recent enough that
+modern AI writing is predictable to it. That means replacing GPT-2, refitting the logistic's midpoint
+and redoing the calibration, with new held-out test sets after it. That is
+more than one change. Moving the floor of the AI band is the one change that
+stops the accusation with the parts already here.
+
+The rule for the number was to put the band above every human text this
+service has scored. The highest are FP03 at 0.7034, the calibration set's
+"harsh reality check" at 0.636, Set H's H5 at 0.634 and the substitute set's
+FP01 at 0.567. 0.75 clears FP03 by 0.047. The line was picked after seeing
+FP03, so the after run is in-sample for that row: it shows the change does
+what the arithmetic says, and it can't show that the change generalizes.
+
+Two other changes were considered and dropped.
+
+- Equal weights. FP03 falls to 0.6819, and EV10 rises to 0.739 with both
+  signals over 0.5, so it would be flagged. But equal weights move weight onto
+  signal one, the signal the diagnoses found unreliable on both sides, and
+  EV10 would be caught for its repetition, not for being AI text.
+- Dropping the punctuation measure. FP03's combined score falls to 0.619 and
+  the AI paragraph keeps its style score of 1.0. But punctuation is the one
+  measure that pulls a writer who uses semicolons, parentheses and questions
+  toward human, every text's style score would move, and it would need its own
+  calibration pass.
 
 ### Attack Run — After
 
-<!-- Same format. `run_attacks.py --label after` -->
+`python run_attacks.py --set attack_set --label after` wrote
+`results/attack_run_2026-11-11_1810_after.md`. The server was freshly started,
+so the limiter began from zero as it had for the before run. Under the same
+marking rule: **12 BROKE, 44 HELD**, against 13 and 43 before.
 
+The 24 rows that carry text to score, side by side:
 
+| ID | Targeting | Before | After | Mark before | Mark after |
+|---|---|---|---|---|---|
+| EV01 | signal two: typos raise word variety | `unsure` 0.690 | `unsure` 0.690 | **BROKE** | **BROKE** |
+| EV02 | signal two: broken-up sentences raise length spread | `unsure` 0.557 | `unsure` 0.557 | **BROKE** | **BROKE** |
+| EV03 | signal two: a pasted quotation changes the shape | `unsure` 0.508 | `unsure` 0.508 | **BROKE** | **BROKE** |
+| EV04 | signal one: unusual words raise perplexity | `unsure` 0.690 | `unsure` 0.740 (changed) | **BROKE** | **BROKE** |
+| EV05 | both signals: heavy human editing pass | `human` 0.436 | `human` 0.436 | **BROKE** | **BROKE** |
+| EV06 | signal two: one very long sentence and one very short | `unsure` 0.483 | `unsure` 0.483 | **BROKE** | **BROKE** |
+| EV07 | signal two: padding with punctuation | `human` 0.371 | `human` 0.371 | **BROKE** | **BROKE** |
+| EV08 | signal one: text below the token window | 422 | 422 | HELD | HELD |
+| EV09 | both: AI text with a human opening paragraph bolted on | `unsure` 0.689 | `unsure` 0.689 | **BROKE** | **BROKE** |
+| EV10 | signal two: repeated stanza structure | `unsure` 0.669 | `unsure` 0.669 | **BROKE** | **BROKE** |
+| FP01 | plain, clear human writing with no flourishes | `unsure` 0.525 | `unsure` 0.525 | HELD | HELD |
+| FP02 | human writing in a formal register | `unsure` 0.648 | `unsure` 0.648 | HELD | HELD |
+| FP03 | a non-native English speaker writing carefully | `ai` 0.703 | `unsure` 0.703 (changed) | **BROKE** | HELD |
+| FP04 | a student essay written to a rubric | `unsure` 0.696 | `unsure` 0.696 | HELD | HELD |
+| FP05 | technical documentation written by a person | `unsure` 0.631 | `unsure` 0.631 | HELD | HELD |
+| FP06 | a person imitating a formal template | `unsure` 0.530 | `unsure` 0.530 | HELD | HELD |
+| FP07 | human writing that repeats a phrase deliberately | `unsure` 0.470 | `unsure` 0.470 | HELD | HELD |
+| FP08 | very short genuine human submission | 422 | 422 | HELD | HELD |
+| PI01 | instruction to ignore the check | `unsure` 0.528 | `unsure` 0.528 | **BROKE** | **BROKE** |
+| PI02 | instruction disguised as a system message | `human` 0.379 | `human` 0.379 | **BROKE** | **BROKE** |
+| PI03 | instruction wrapped in the writer's voice | `unsure` 0.507 | `unsure` 0.507 | **BROKE** | **BROKE** |
+| PI04 | attempt to make the label text hostile | `human` 0.386 | `human` 0.386 | HELD | HELD |
+| PI05 | attempt to inject into the audit log | `unsure` 0.470 | `unsure` 0.470 | HELD | HELD |
+| PI06 | instruction plus real human text | `unsure` 0.523 | `unsure` 0.523 | HELD | HELD |
+
+The other 32 rows (malformed, flood and the address-budget `429`s on RQ10 and
+RQ11) logged the same status and reason in both runs. Comparing the 56 log
+lines of each run field by field, only EV04 and FP03 differ. FP03's line after
+the change:
+
+```json
+{"timestamp": "2026-11-11T23:10:20+00:00", "content_id": "a33a08f2-2bb1-41a0-ab83-ec94d5a1bc0c", "creator_id": "attacker_FP03", "guess": "unsure", "model_score": 0.6173, "style_score": 0.7464, "combined_score": 0.7034, "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.", "status": "decided", "word_count": 83, "text_preview": "I want to describe my experience of the first month in this country. The weather"}
+```
+
+The criteria eval, `python run_eval.py --label after` (three trials) and
+`python scripts/verdicts.py results/run_2026-11-11_1812_after.json`:
+
+| Criterion | Before, all three trials | After, all three trials |
+|---|---|---|
+| 1. No human writing gets the AI label | 0/10 ai, MET | 0/10 ai, MET |
+| 2. The detector still catches unedited AI | 0/5 ai, gap +0.051, MISSED | 0/5 ai, gap +0.051, MISSED |
+| 3. All three labels reachable | ai 0, unsure 12, human 8; B unsure 2/5, MISSED | the same, MISSED |
+| 4. Every appeal changes status and is recorded | 7/7, MET | 7/7, MET |
+| 5. Bad input refused cleanly with a trace | 8/8, ping ok, MET | 8/8, ping ok, MET |
+
+All 20 texts got the same score to four places
+(`results/verdicts_run_2026-11-11_1812_after.md`). The highest was 0.6544,
+under both lines.
+
+The substitute set, after (`results/attack_run_2026-11-11_1811_after.md`): no
+label changed. Four rows that sat at the 0.69 cap (EV06, EV07, FL03, FL04) now
+land between 0.705 and 0.74, still `unsure`. Its two `ai` rows are both AI text
+(PI03 at 0.7882, ED08 at 0.8644) and kept the label. MR16 and MR17 still return
+`500` with no log line.
 
 **Did it help, and how do I know:**
 
-<!-- Widening the unsure band usually fixes one problem and creates another.
-     Reporting that trade honestly is worth full credit. -->
+It fixed one thing: the second-language writer is no longer accused. FP03 is
+the only row in either attack set or the eval whose label changed, and its
+score stayed at 0.7034 while the line moved past it. That is the whole benefit: one false
+accusation removed across 56 staff attacks, 62 substitute attacks and 20 eval
+texts.
 
+What it cost, measured:
 
+- On the calibration set (`scripts/calibrate.py`, rerun after the change), AI
+  texts flagged fell from 2 of 6 to 1 of 6. The AI Erie Canal text, at 0.726,
+  is now `unsure`. Human texts flagged stayed at 0 of 10.
+- The unsure band now runs from 0.45 to just under 0.75, and texts that only
+  one signal reads as AI are held at 0.74. An `unsure` label covers a wider
+  range of texts, so it tells a reader less.
+- Criterion 2 is further away. Set A's best score was 0.5805, and the line it
+  has to reach moved up by 0.05.
+
+The trade went the way the template says it would: one fewer wrong accusation
+on the attack set, one fewer correct flag on the calibration set. The staff set
+can't show the second half, because none of its AI rows reached the AI band
+before the change either, so the attack run makes the change look free. The
+calibration set is where the cost shows.
+
+It also leaves the cause alone. Signal one still ranks FP03 above the AI
+paragraph, and FP03 now sits 0.047 under the line. Before unit 8 the thinnest
+human margin was 0.064, and the first second-language text in the staff set
+went straight through it.
 
 ---
 
