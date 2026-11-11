@@ -26,7 +26,7 @@ def test_low_scores_average_with_no_gate():
     assert scoring.combine_signals(0.1, 0.2) == pytest.approx(0.1 / 3 + 0.2 * 2 / 3, abs=1e-4)
 
 
-@pytest.mark.parametrize("model,style", [(0.28, 0.96), (0.5, 1.0), (1.0, 0.5), (0.9, 0.45)])
+@pytest.mark.parametrize("model,style", [(0.28, 0.96), (0.4415, 1.0), (0.5, 1.0), (1.0, 0.5), (0.9, 0.45)])
 def test_one_signal_alone_cannot_reach_the_ai_band(model, style):
     combined = scoring.combine_signals(model, style)
     assert combined < config.AI_THRESHOLD
@@ -35,11 +35,12 @@ def test_one_signal_alone_cannot_reach_the_ai_band(model, style):
         assert combined == CAP
 
 
-@pytest.mark.parametrize("style", [0.8, 0.85, 0.9, 0.95, 1.0])
+@pytest.mark.parametrize("style", [0.875, 0.9, 0.95, 1.0])
 def test_no_model_score_at_or_below_the_floor_reaches_ai_even_at_the_rounding_edge(style):
     # Both signals arrive rounded to 4 places, so walk every 4-place model
     # score up to the floor. An average a hair under the AI line that slipped past
-    # the gate and then rounded up to 0.7000 is the case this guards.
+    # the gate and then rounded up to 0.7500 is the case this guards. Style
+    # 0.875 is the lowest that can bring a model score of 0.5 up to the line.
     for i in range(0, 5001):
         model = i / 10_000
         combined = scoring.combine_signals(model, style)
@@ -62,6 +63,13 @@ def test_the_second_language_writer_from_the_attack_run_is_not_flagged():
     combined = scoring.combine_signals(0.6173, 0.7464)
     assert combined == pytest.approx(0.7034, abs=1e-4)
     assert scoring.score_to_label(combined)[0] == "unsure"
+
+
+def test_the_cap_moved_with_the_line_to_0_74():
+    # attack_set EV04, logged 2026-11-11 after the change: model 0.3806 and
+    # style 1.0 average 0.7935, and only one signal leans AI, so it is held
+    # just under the line. It was logged at 0.69 before the change.
+    assert scoring.combine_signals(0.3806, 1.0) == 0.74
 
 
 def test_the_sample_run_ai_essay_keeps_the_ai_label():
