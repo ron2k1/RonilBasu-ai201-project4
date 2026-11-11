@@ -4,7 +4,7 @@
 - Service: `app.py::submit`
 - 56 attacks · 2026-11-11 18:10
 - Auto-marked BROKE (5xx, crash, no response): **0**
-- Marked by hand afterwards: **12 BROKE, 44 HELD** (rule in the README)
+- Marked afterwards under the README rule: **12 BROKE, 44 HELD**
 
 The Verdict column is blank where a script can't honestly decide. Whether
 an evasion worked depends on where you put your thresholds — read the

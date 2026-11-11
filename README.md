@@ -204,9 +204,10 @@ into it, and the case the gate now holds is the staff attack set's AI paragraph
 
 The opposite worry is a real 2019 r/rutgers post ("got a harsh reality
 check"). It is human, and both signals lean AI (model 0.63, style 0.64), so the
-gate cannot help. Its average is 0.636, under 0.70, so it is labelled unsure.
-That 0.064 margin is the thinnest on the human side of the calibration set
-and the number to watch in unit 8. Unit 8 found a thinner one: FP03 in the
+gate cannot help. Its average is 0.636, so it is labelled unsure. Under unit
+7's 0.70 line that was a 0.064 margin, the thinnest on the human side of the
+calibration set and the number unit 8 had to watch (at 0.75 it is 0.114).
+Unit 8 found a thinner one: FP03 in the
 staff attack set, careful second-language writing, at 0.7034, over the 0.70
 line (Attack Run — Before).
 
@@ -614,7 +615,7 @@ Fifty in a day is more than anyone posts by hand.
 
 A script mapping my bands is the opposite case. Every response hands back the
 combined score and both signal scores, so each probe tells the script a lot.
-It still needs hundreds of them to find where 0.45 and 0.70 sit for the kind
+It still needs hundreds of them to find where 0.45 and 0.75 sit for the kind
 of text it wants to pass. At fifty a day, one id gets fifty probes. The
 starter's 200 a day would have given it four times that.
 
@@ -904,7 +905,8 @@ three stages:
 **Which one it was.** Each cause gets the same test: whether that stage ranks
 FP03 as more AI-like than real AI text. The control is the unedited AI paragraph
 that every evasion row starts from, scored by the same `detector.py` and
-`stylometry.py`.
+`stylometry.py`. It is EV09's text after the first blank line, where EV09's
+added two-sentence opening ends, so it can be rebuilt from `attack_set/`.
 
 | | FP03 (human) | AI paragraph (control) |
 |---|---|---|
@@ -934,8 +936,9 @@ that every evasion row starts from, scored by the same `detector.py` and
   by moving weight onto the signal that got the order wrong.
 - The gate is where the wrong ranking became a flag. It exists to stop a text
   that only signal two reads as AI, and it let FP03 through because signal one
-  voted 0.6173, over the 0.5 floor. With a model score at or under 0.5,
-  `scoring.py::combine_signals` caps FP03 at 0.69 and it is labelled unsure.
+  voted 0.6173, over the 0.5 floor. The same vote also raised the average.
+  With a model score at or under 0.5, FP03's average would be at most 0.664,
+  unsure before the gate had anything to do.
 
 So it was cause 1, signal one: GPT-2 reads predictable wording as AI, and
 careful second-language English is very predictable to it (perplexity 18.5
@@ -981,7 +984,8 @@ repetition as human. MATTR fell to 0.500, my anchors read low variety as
 human, and the vocabulary sub-score went to 0. Combined, 0.6692.
 
 **3. Dilution: PI01 to PI03.** Stage: signal one. Each puts an instruction in
-front of the paragraph's first two sentences. Nothing in the service reads the
+front of the paragraph's opening: its first two sentences, plus part of the
+third in PI03. Nothing in the service reads the
 instruction, but GPT-2 scores it like any other text, and its wording is
 surprising. Scored offline, the 26-word fragment alone has perplexity 17.7,
 model 0.6348, style 0.8333 and a combined 0.7671, which is `ai` (the route
@@ -1253,7 +1257,8 @@ Criterion 5, bodies 5 to 8 and the `/ping` after them, from
 **Diagnoses**
 
 The two misses are one problem seen twice. Nothing out of the 20 texts reached
-the AI band: the highest score was 0.6544, and the band starts at 0.70.
+the AI band: the highest score was 0.6544, and the band started at 0.70 for
+this run.
 
 Criterion 2, missed. The stage is signal one, and the combining rule turns its
 failure into a veto.
@@ -1540,9 +1545,11 @@ score, so it needs a new calibration pass and new held-out test sets after it.
 - **Two requests crash the route and leave no log line** (substitute MR16 and
   MR17). A lone surrogate makes the tokenizer raise `TypeError`, and deep
   nesting makes `json.loads` raise `RecursionError`. What I'd do: refuse text
-  that can't be encoded as UTF-8 with a `422` before scoring, and catch
-  `RecursionError` in `_json_body` as `400 invalid_json`, both with a
-  `rejected` line. Why I stopped: that is input validation, a second system
+  that can't be encoded as UTF-8 with a `422` before scoring, and parse the
+  body in one shared helper that turns `RecursionError` into `400
+  invalid_json`, both with a `rejected` line. Catching it in `_json_body`
+  alone wouldn't work: Flask keeps nothing from a failed parse, so the route
+  would parse the body again and crash there instead. Why I stopped: that is input validation, a second system
   change. It is the first thing I'd fix next, since these are the only
   requests in any run that leave no trace in the log.
 - **Non-English text is refused as too short** (MF07, and the substitute's

@@ -1,5 +1,9 @@
 # Milestone 4: what the two signals did, and the rule written before coding it
 
+> Unit 7 record. Unit 8 raised `AI_THRESHOLD` from 0.70 to 0.75, so the
+> cap below moved from 0.69 to 0.74 (README, The Improvement). The 0.70
+> and 0.69 below are the numbers as they stood when this was written.
+
 Everything here comes from `samples/calibration.json` (10 human texts dated
 before ChatGPT, 6 unedited AI texts, 2 lightly edited AI texts) run through
 `scripts/calibrate.py`. None of these texts may be reused for the criteria
