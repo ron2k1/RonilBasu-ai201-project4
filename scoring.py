@@ -61,8 +61,11 @@ def combine_signals(model_score: float, style_score: float) -> float:
 
     The split case this exists for: the AI paper abstract in the calibration
     set. GPT-2 finds its jargon surprising (model 0.28) while its shape is the
-    most machine-like in the set (style 0.96). The average is 0.73, the gate
-    sees model at 0.28, and it is capped to 0.69: unsure.
+    most machine-like in the set (style 0.96). The average is 0.73. With the AI
+    line at 0.70 the gate saw model at 0.28 and capped it to 0.69; with the
+    line at 0.75 (unit 8) it is unsure without the cap. The staff attack set's
+    AI paragraph is the same split: model 0.44, style 1.0, average 0.81, capped
+    to just under the line.
     """
     # Round BEFORE the gate. Gating the raw average and rounding afterwards
     # let 0.69997 pass the gate and then round up to 0.7000, an AI label with
@@ -137,7 +140,7 @@ def score_to_label(score: float) -> tuple[str, str]:
     milestone.
 
     Bands (config.py): below HUMAN_THRESHOLD (0.45) is human, AI_THRESHOLD
-    (0.70) and above is AI, everything between is unsure. Each boundary
+    (0.75) and above is AI, everything between is unsure. Each boundary
     belongs to exactly one band, so there is no gap and no overlap.
     """
     if score >= config.AI_THRESHOLD:

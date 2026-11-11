@@ -165,8 +165,8 @@ land near 0.5. Short texts give it very little to count.
 **The rule:** a weighted average in which the style signal counts twice as
 much as the model signal, followed by an agreement gate on the AI side. If
 the average reaches the AI threshold while either signal on its own is at or
-below 0.5, the score is capped at 0.69, just under the AI line, and the text
-is labelled unsure. One signal alone never produces the AI label. The gate
+below 0.5, the score is capped 0.01 under the AI line (at 0.74 now, 0.69 in
+unit 7), and the text is labelled unsure. One signal alone never produces the AI label. The gate
 only guards the AI side. A low average gets the human label without both
 signals agreeing, because a wrong "human" costs the site a little and a wrong
 "AI" costs a person a lot. The bands are lopsided for the same reason.
@@ -178,9 +178,11 @@ signals agreeing, because a wrong "human" costs the site a little and a wrong
   The model signal keeps a third because it reads word choice in context,
   which style cannot see.
 - Agreement floor 0.5. The AI label needs `min(model_score, style_score) > 0.5`.
-  Otherwise an average of 0.70 or more is capped at 0.69.
-- Bands: human below 0.45, unsure from 0.45 up to 0.70, AI at 0.70 and above.
-  Reaching AI takes 0.20 above a coin flip. Reaching human takes 0.05 below it.
+  Otherwise an average at or over the AI line is capped 0.01 under it.
+- Bands: human below 0.45, unsure from 0.45 up to 0.75, AI at 0.75 and above.
+  Reaching AI takes 0.25 above a coin flip. Reaching human takes 0.05 below it.
+  The AI line was 0.70 in unit 7. Unit 8's one improvement raised it, for the
+  reason in The Improvement.
 - Every number lives in `config.py` with its reason. The rule was written down
   in docs/calibration.md before it was coded.
 
@@ -195,13 +197,18 @@ uncommon punctuation at all). The weighted average is 0.73, which would be the
 AI label. The gate sees the model signal at 0.28, caps the score at 0.69, and
 the abstract is labelled unsure. That is a miss on a real AI text, and the
 rule makes it on purpose. Style is also the signal that flags plain human
-writing, so it does not get to accuse anyone by itself.
+writing, so it does not get to accuse anyone by itself. That was the rule with
+the line at 0.70. At 0.75 the abstract's 0.73 is unsure before the gate comes
+into it, and the case the gate now holds is the staff attack set's AI paragraph
+(model 0.44, style 1.0, average 0.81, capped at 0.74).
 
 The opposite worry is a real 2019 r/rutgers post ("got a harsh reality
 check"). It is human, and both signals lean AI (model 0.63, style 0.64), so the
 gate cannot help. Its average is 0.636, under 0.70, so it is labelled unsure.
 That 0.064 margin is the thinnest on the human side of the calibration set
-and the number to watch in unit 8.
+and the number to watch in unit 8. Unit 8 found a thinner one: FP03 in the
+staff attack set, careful second-language writing, at 0.7034, over the 0.70
+line (Attack Run — Before).
 
 **Where this leaves the criteria before unit 8 runs:** on the calibration set
 the final rule gives the AI label to 0 of 10 human texts (7 human, 3 unsure)
@@ -221,10 +228,11 @@ the cap moves with it.
 | Label | Score range | The exact text a reader sees |
 |---|---|---|
 | high-confidence human | 0.00 up to 0.45 | Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it. |
-| unsure | 0.45 up to 0.70 | Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal. |
-| high-confidence AI | 0.70 to 1.00 | Our automated check flagged this text as likely AI-generated. Checks like this can be wrong, including about writing people did themselves. If you wrote this, you can ask for a person to review it. |
+| unsure | 0.45 up to 0.75 | Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal. |
+| high-confidence AI | 0.75 to 1.00 | Our automated check flagged this text as likely AI-generated. Checks like this can be wrong, including about writing people did themselves. If you wrote this, you can ask for a person to review it. |
 
-Each boundary belongs to the band above it: 0.45 is unsure and 0.70 is AI.
+Each boundary belongs to the band above it: 0.45 is unsure and 0.75 is AI.
+The AI band started at 0.70 until unit 8's improvement.
 Every score from 0 to 1 gets exactly one label (`tests/test_labels.py` walks
 all 1,001 steps of 0.001). All three are reached by real texts in the Sample
 Run below.

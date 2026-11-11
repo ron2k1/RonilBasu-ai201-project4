@@ -149,12 +149,19 @@ AGREEMENT_FLOOR = 0.5
 # getting through. There is no setting that avoids the trade — only settings
 # that decide who pays for it.
 #
-# Lopsided on purpose. The AI label takes 0.20 above a coin flip; the human
-# label takes 0.05 below one. The thinnest human margin on the calibration set
-# is a real 2019 r/rutgers post at 0.636, under 0.70 by 0.06.
+# Lopsided on purpose. The AI label takes 0.25 above a coin flip; the human
+# label takes 0.05 below one.
+#
+# Unit 8 raised AI_THRESHOLD from 0.70 to 0.75, the one improvement after the
+# attack run (README, The Improvement). At 0.70 the staff set's FP03, careful
+# second-language writing, was labelled AI at 0.7034. 0.75 puts the band above
+# every human text scored so far (calibration, Set H, both attack sets); FP03
+# is the thinnest margin, 0.047 under. The cost: the calibration set's AI
+# Erie Canal text (0.726) is no longer flagged. The gate's cap moves with the
+# line, to 0.74.
 
 HUMAN_THRESHOLD = 0.45
-AI_THRESHOLD = 0.70
+AI_THRESHOLD = 0.75
 
 # ⚠️ One thing that catches people out in Milestone 5. A weighted average can
 # only land between its two inputs — so while `style_signal` is still the stub

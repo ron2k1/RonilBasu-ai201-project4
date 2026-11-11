@@ -10,8 +10,8 @@ import scoring
 
 @pytest.mark.parametrize("score,guess", [
     (0.0, "human"), (0.2, "human"), (0.4499, "human"),
-    (0.45, "unsure"), (0.51, "unsure"), (0.6999, "unsure"),
-    (0.70, "ai"), (0.95, "ai"), (1.0, "ai"),
+    (0.45, "unsure"), (0.51, "unsure"), (0.70, "unsure"), (0.7499, "unsure"),
+    (0.75, "ai"), (0.95, "ai"), (1.0, "ai"),
 ])
 def test_bands(score, guess):
     assert scoring.score_to_label(score)[0] == guess
