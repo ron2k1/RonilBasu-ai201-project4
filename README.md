@@ -561,7 +561,7 @@ an average of 0.69997 slipped past the agreement gate and then rounded up to
 
 Claude Code ran unit 8 at my request too: the rate limiter and the audit log,
 both attack runs, the eval, the diagnoses, the threshold change (made
-test-first) and these write-ups. The suite is now 108 tests. I didn't have the
+test-first) and these write-ups. The suite is now 109 tests. I didn't have the
 staff attack set, so Claude Code found it in a TF's public course repo on
 GitHub and matched it by hash against two other public copies (Attack Run —
 Before). Before that turned up, a separate Opus agent wrote a substitute set
@@ -571,7 +571,12 @@ says. Two of its malformed requests found the only crashes in any run.
 
 Review agents read the work before it was pushed. The rate-limit review found
 three holes (Rate Limiting). A review of the eval scripts found three checks
-that could pass a broken run, and they were tightened in commit `c64c5c8`.
+that could pass a broken run, and they were tightened in commit `c64c5c8`. A
+final review checked this README's unit 8 numbers against the results files
+and the log and found none wrong. It found that my fix for the deep-nesting
+crash would only have moved the crash into the route, and that a what-if
+about FP03 had its arithmetic wrong. Both are corrected, along with seven
+smaller issues (commits `3f38224` and `16d03e0`).
 
 **Moment 3**
 
