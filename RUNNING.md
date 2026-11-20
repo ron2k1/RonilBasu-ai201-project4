@@ -306,3 +306,48 @@ is evidence, and the entries you paste into your README are what unit 8 grades.
 
 **Do not delete and recreate this repository.** You submit the same URL both
 units.
+
+## Capstone: clean local run
+
+Use Linux x86-64, Python 3.12, and enough free space to install the CPU stack
+and cache GPT-2 (about 550 MB of model weights). No API account or key is
+required. These instructions replace the older starter examples for this
+section only: `/submit` is implemented and does not return the starter 501.
+
+From a fresh checkout of the capstone branch:
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements-capstone.txt
+```
+
+Start the app, outside the editor, with this single command:
+
+```bash
+OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 TOKENIZERS_PARALLELISM=false .venv/bin/python -m gunicorn --workers 1 --bind 127.0.0.1:5000 --timeout 180 capstone_service:app
+```
+
+The first valid submission loads GPT-2. An internet connection is needed to
+download the weights once. Precache them with `.venv/bin/python detector.py`
+if needed. Reuse the same weights for any before/after comparison. For an
+offline rerun after caching, set `HF_HUB_OFFLINE=1`.
+
+From another terminal, `curl -fsS http://127.0.0.1:5000/health` checks the
+worker. For a successful submit, send JSON with a nonempty `creator_id` and
+at least 30 words in `text`. The `X-Request-ID` header joins the response to
+`.capstone/requests.jsonl`. The existing decisions and appeals are written to
+a separate `.capstone/capstone-audit.jsonl` file on this launch path. Restart
+with the same working directory or the same `AI201_CAPSTONE_LOG` path to
+keep the same log. This setup runs only on loopback, with one worker.
+
+To rerun the acceptance harness, create a disposable separate checkout at
+the original Unit 8 commit `05af61ed3c4dd6128087e9ac8441a82107c41c59`. The
+original app writes its audit results there. From the capstone checkout run:
+
+```bash
+.venv/bin/python run_capstone.py --baseline /path/to/disposable/unit8-checkout --output .capstone/my-trials
+```
+
+The harness starts and stops its own workers on ephemeral loopback ports.
+Use a new output directory for each run. Its fixtures are synthetic and its
+evidence contains no submitted text or creator identifiers.
