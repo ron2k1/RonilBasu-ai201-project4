@@ -1648,3 +1648,13 @@ label they do.
 ---
 
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
+
+## Capstone
+
+**What This Extends**
+
+Provenance Guard already scores submissions and records decisions and appeals. The capstone adds independent HTTP request records so a response and the time spent producing it can be traced after the process exits.
+
+**The Shape**
+
+Shape A: deploy and instrument. A local single-worker server exposes the existing app with a separate request log for `POST /submit`. Classifier training, score thresholds, appeal workflow changes, and public hosting are out of scope.
