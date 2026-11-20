@@ -7,28 +7,16 @@ from time import perf_counter_ns, process_time_ns
 from uuid import uuid4
 
 from flask import g, request
-from werkzeug.exceptions import RequestEntityTooLarge
 
 import config
 from app import app
 from capstone_log import append_record
-from stylometry import words
 
 LOG_PATH = Path(os.environ.get("AI201_CAPSTONE_LOG", ".capstone/requests.jsonl"))
 
 # Keep earlier exercise evidence intact in the default capstone run.
 config.LOG_DIR = LOG_PATH.parent
 config.AUDIT_LOG = LOG_PATH.parent / "capstone-audit.jsonl"
-
-
-def input_word_count() -> int | None:
-    """Observe the cached request without retaining text or creator ID."""
-    try:
-        payload = request.get_json(silent=True)
-    except RequestEntityTooLarge:
-        return None
-    text = payload.get("text") if isinstance(payload, dict) else None
-    return len(words(text.strip())) if isinstance(text, str) else None
 
 
 @app.before_request
@@ -55,7 +43,7 @@ def record_submit_response(response):
     response.headers["X-Request-ID"] = request_id
 
     metadata_start = perf_counter_ns()
-    input_words = input_word_count()
+    input_words = getattr(g, "submit_input_words", None)
     metadata_ms = (perf_counter_ns() - metadata_start) / 1_000_000
     event = {
         "timestamp": g.capstone_timestamp,

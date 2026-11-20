@@ -27,7 +27,7 @@ Routes:
 
 import uuid
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 from werkzeug.exceptions import RequestEntityTooLarge
 
 import audit
@@ -249,6 +249,7 @@ def submit():
                        creator_id=creator_id, text_chars=len(text))
 
     word_count = len(stylometry.words(text))
+    g.submit_input_words = word_count
     if word_count < config.MIN_WORDS:
         return _refuse(422, "text_too_short",
                        f"This is {word_count} words. We need at least "
