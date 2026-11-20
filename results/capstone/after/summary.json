@@ -1,0 +1,1000 @@
+{
+  "model": "gpt2",
+  "criteria": {
+    "1": [
+      {
+        "observed": 10,
+        "target": 10,
+        "met": true,
+        "sample": [
+          {
+            "timestamp": "2026-11-20T12:34:36.099+00:00",
+            "request_id": "f0f70e72ec8847bba8b87282d81a3ed3",
+            "route": "/submit",
+            "input_content_bytes": 357,
+            "input_words": 53,
+            "http_status": 200,
+            "duration_ms": 200.920412,
+            "cpu_ms": 200.847159,
+            "input_metadata_ms": 0.001287,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "guess": "unsure"
+          }
+        ]
+      },
+      {
+        "observed": 10,
+        "target": 10,
+        "met": true,
+        "sample": [
+          {
+            "timestamp": "2026-11-20T12:34:40.162+00:00",
+            "request_id": "6157f8524673403dacc71ba61376d615",
+            "route": "/submit",
+            "input_content_bytes": 357,
+            "input_words": 53,
+            "http_status": 200,
+            "duration_ms": 184.122535,
+            "cpu_ms": 184.13578,
+            "input_metadata_ms": 0.000933,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "guess": "unsure"
+          }
+        ]
+      },
+      {
+        "observed": 10,
+        "target": 10,
+        "met": true,
+        "sample": [
+          {
+            "timestamp": "2026-11-20T12:34:44.311+00:00",
+            "request_id": "bd49b1ca6e4844e39c108d896f51c18a",
+            "route": "/submit",
+            "input_content_bytes": 357,
+            "input_words": 53,
+            "http_status": 200,
+            "duration_ms": 183.697923,
+            "cpu_ms": 183.727932,
+            "input_metadata_ms": 0.001116,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "guess": "unsure"
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "observed": 5,
+        "target": 5,
+        "met": true,
+        "sample": {
+          "response": {
+            "request_id": "acc7dca510d44ef1ad28ab44ed97376a",
+            "http_status": 200,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "guess": "unsure",
+            "confidence": 0.5815,
+            "error": null
+          },
+          "log": [
+            {
+              "timestamp": "2026-11-20T12:34:38.014+00:00",
+              "request_id": "acc7dca510d44ef1ad28ab44ed97376a",
+              "route": "/submit",
+              "input_content_bytes": 357,
+              "input_words": 53,
+              "http_status": 200,
+              "duration_ms": 191.223276,
+              "cpu_ms": 191.250557,
+              "input_metadata_ms": 0.001197,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            }
+          ]
+        }
+      },
+      {
+        "observed": 5,
+        "target": 5,
+        "met": true,
+        "sample": {
+          "response": {
+            "request_id": "dfca905a1daf4bd28bf7e47d0f400906",
+            "http_status": 200,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "guess": "unsure",
+            "confidence": 0.5815,
+            "error": null
+          },
+          "log": [
+            {
+              "timestamp": "2026-11-20T12:34:42.075+00:00",
+              "request_id": "dfca905a1daf4bd28bf7e47d0f400906",
+              "route": "/submit",
+              "input_content_bytes": 357,
+              "input_words": 53,
+              "http_status": 200,
+              "duration_ms": 191.606435,
+              "cpu_ms": 191.593581,
+              "input_metadata_ms": 0.001261,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            }
+          ]
+        }
+      },
+      {
+        "observed": 5,
+        "target": 5,
+        "met": true,
+        "sample": {
+          "response": {
+            "request_id": "cf349850fa7548a88fa13640a0cfa535",
+            "http_status": 200,
+            "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+            "guess": "unsure",
+            "confidence": 0.5815,
+            "error": null
+          },
+          "log": [
+            {
+              "timestamp": "2026-11-20T12:34:46.260+00:00",
+              "request_id": "cf349850fa7548a88fa13640a0cfa535",
+              "route": "/submit",
+              "input_content_bytes": 357,
+              "input_words": 53,
+              "http_status": 200,
+              "duration_ms": 190.809192,
+              "cpu_ms": 190.844182,
+              "input_metadata_ms": 0.001138,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            }
+          ]
+        }
+      }
+    ],
+    "3": [
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": [
+          {
+            "response": {
+              "request_id": "c60ea1a7ecb145cd98908822f7e9ce76",
+              "http_status": 400,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "invalid_json"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:38.989+00:00",
+                "request_id": "c60ea1a7ecb145cd98908822f7e9ce76",
+                "route": "/submit",
+                "input_content_bytes": 1,
+                "input_words": null,
+                "http_status": 400,
+                "duration_ms": 0.844148,
+                "cpu_ms": 0.8724,
+                "input_metadata_ms": 0.001858,
+                "reason": "invalid_json"
+              }
+            ],
+            "ok": true
+          },
+          {
+            "response": {
+              "request_id": "7b6ab668c9f64df3a873e72c86cb0621",
+              "http_status": 400,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "missing_text"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:38.992+00:00",
+                "request_id": "7b6ab668c9f64df3a873e72c86cb0621",
+                "route": "/submit",
+                "input_content_bytes": 64,
+                "input_words": null,
+                "http_status": 400,
+                "duration_ms": 0.443483,
+                "cpu_ms": 0.445829,
+                "input_metadata_ms": 0.00186,
+                "reason": "missing_text"
+              }
+            ],
+            "ok": true
+          },
+          {
+            "response": {
+              "request_id": "ae37e1f205da4fa68402bc0d757109e8",
+              "http_status": 422,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "text_too_short"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:38.995+00:00",
+                "request_id": "ae37e1f205da4fa68402bc0d757109e8",
+                "route": "/submit",
+                "input_content_bytes": 86,
+                "input_words": 2,
+                "http_status": 422,
+                "duration_ms": 0.355842,
+                "cpu_ms": 0.357732,
+                "input_metadata_ms": 0.000675,
+                "reason": "text_too_short"
+              }
+            ],
+            "ok": true
+          }
+        ]
+      },
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": [
+          {
+            "response": {
+              "request_id": "18b24134f3524876ababb4861673032b",
+              "http_status": 400,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "invalid_json"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:43.056+00:00",
+                "request_id": "18b24134f3524876ababb4861673032b",
+                "route": "/submit",
+                "input_content_bytes": 1,
+                "input_words": null,
+                "http_status": 400,
+                "duration_ms": 0.823706,
+                "cpu_ms": 0.846242,
+                "input_metadata_ms": 0.001731,
+                "reason": "invalid_json"
+              }
+            ],
+            "ok": true
+          },
+          {
+            "response": {
+              "request_id": "6751869e49ab4b81b6a399d41519b85d",
+              "http_status": 400,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "missing_text"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:43.060+00:00",
+                "request_id": "6751869e49ab4b81b6a399d41519b85d",
+                "route": "/submit",
+                "input_content_bytes": 64,
+                "input_words": null,
+                "http_status": 400,
+                "duration_ms": 0.356247,
+                "cpu_ms": 0.357807,
+                "input_metadata_ms": 0.001821,
+                "reason": "missing_text"
+              }
+            ],
+            "ok": true
+          },
+          {
+            "response": {
+              "request_id": "7cb127d35ee74c7596d052c6490bff32",
+              "http_status": 422,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "text_too_short"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:43.062+00:00",
+                "request_id": "7cb127d35ee74c7596d052c6490bff32",
+                "route": "/submit",
+                "input_content_bytes": 86,
+                "input_words": 2,
+                "http_status": 422,
+                "duration_ms": 0.394036,
+                "cpu_ms": 0.396299,
+                "input_metadata_ms": 0.00085,
+                "reason": "text_too_short"
+              }
+            ],
+            "ok": true
+          }
+        ]
+      },
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": [
+          {
+            "response": {
+              "request_id": "7c675014a9584325ae7975e9a2cf1240",
+              "http_status": 400,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "invalid_json"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:47.230+00:00",
+                "request_id": "7c675014a9584325ae7975e9a2cf1240",
+                "route": "/submit",
+                "input_content_bytes": 1,
+                "input_words": null,
+                "http_status": 400,
+                "duration_ms": 0.751783,
+                "cpu_ms": 0.772012,
+                "input_metadata_ms": 0.001885,
+                "reason": "invalid_json"
+              }
+            ],
+            "ok": true
+          },
+          {
+            "response": {
+              "request_id": "dd7ce9f15e874280b293e38b1058ebde",
+              "http_status": 400,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "missing_text"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:47.233+00:00",
+                "request_id": "dd7ce9f15e874280b293e38b1058ebde",
+                "route": "/submit",
+                "input_content_bytes": 64,
+                "input_words": null,
+                "http_status": 400,
+                "duration_ms": 0.344929,
+                "cpu_ms": 0.346634,
+                "input_metadata_ms": 0.001692,
+                "reason": "missing_text"
+              }
+            ],
+            "ok": true
+          },
+          {
+            "response": {
+              "request_id": "f12116922af649b79c3121278bce9274",
+              "http_status": 422,
+              "label": null,
+              "guess": null,
+              "confidence": null,
+              "error": "text_too_short"
+            },
+            "log": [
+              {
+                "timestamp": "2026-11-20T12:34:47.236+00:00",
+                "request_id": "f12116922af649b79c3121278bce9274",
+                "route": "/submit",
+                "input_content_bytes": 86,
+                "input_words": 2,
+                "http_status": 422,
+                "duration_ms": 0.385872,
+                "cpu_ms": 0.387992,
+                "input_metadata_ms": 0.000733,
+                "reason": "text_too_short"
+              }
+            ],
+            "ok": true
+          }
+        ]
+      }
+    ],
+    "4": [
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": {
+          "responses": [
+            {
+              "request_id": "a93b9c4b5353437ba2b9454df62eeefa",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            {
+              "request_id": "5934eeb9e48a49629c1c681ff17df6ad",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            {
+              "request_id": "03035fd2fedb4358b3f15b7ff1438e9e",
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            }
+          ],
+          "log": [
+            {
+              "timestamp": "2026-11-20T12:34:51.531+00:00",
+              "request_id": "a93b9c4b5353437ba2b9454df62eeefa",
+              "route": "/submit",
+              "input_content_bytes": 357,
+              "input_words": 53,
+              "http_status": 200,
+              "duration_ms": 3848.970562,
+              "cpu_ms": 3836.855217,
+              "input_metadata_ms": 0.002631,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            },
+            {
+              "timestamp": "2026-11-20T12:34:55.383+00:00",
+              "request_id": "5934eeb9e48a49629c1c681ff17df6ad",
+              "route": "/submit",
+              "input_content_bytes": 398,
+              "input_words": 48,
+              "http_status": 200,
+              "duration_ms": 190.795299,
+              "cpu_ms": 188.91728,
+              "input_metadata_ms": 0.001656,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            },
+            {
+              "timestamp": "2026-11-20T12:34:56.399+00:00",
+              "request_id": "03035fd2fedb4358b3f15b7ff1438e9e",
+              "route": "/submit",
+              "input_content_bytes": 352,
+              "input_words": 52,
+              "http_status": 200,
+              "duration_ms": 3277.369559,
+              "cpu_ms": 3273.168003,
+              "input_metadata_ms": 0.001468,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human"
+            }
+          ]
+        }
+      },
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": {
+          "responses": [
+            {
+              "request_id": "c72e5343ba7f4b00927300163342e005",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            {
+              "request_id": "ea276c81075c4ecfb3b13d278beca5e4",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            {
+              "request_id": "4f124594c44a4eae86079d35292f485d",
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            }
+          ],
+          "log": [
+            {
+              "timestamp": "2026-11-20T12:35:00.502+00:00",
+              "request_id": "c72e5343ba7f4b00927300163342e005",
+              "route": "/submit",
+              "input_content_bytes": 357,
+              "input_words": 53,
+              "http_status": 200,
+              "duration_ms": 3319.592243,
+              "cpu_ms": 3314.433737,
+              "input_metadata_ms": 0.001454,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            },
+            {
+              "timestamp": "2026-11-20T12:35:03.824+00:00",
+              "request_id": "ea276c81075c4ecfb3b13d278beca5e4",
+              "route": "/submit",
+              "input_content_bytes": 398,
+              "input_words": 48,
+              "http_status": 200,
+              "duration_ms": 184.380485,
+              "cpu_ms": 184.416204,
+              "input_metadata_ms": 0.001515,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            },
+            {
+              "timestamp": "2026-11-20T12:35:04.833+00:00",
+              "request_id": "4f124594c44a4eae86079d35292f485d",
+              "route": "/submit",
+              "input_content_bytes": 352,
+              "input_words": 52,
+              "http_status": 200,
+              "duration_ms": 3333.344982,
+              "cpu_ms": 3328.31715,
+              "input_metadata_ms": 0.001183,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human"
+            }
+          ]
+        }
+      },
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": {
+          "responses": [
+            {
+              "request_id": "0413558015de45d3a7a956c440fa7167",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            {
+              "request_id": "cd0166626a7d4c8fa9514e88d634e130",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            {
+              "request_id": "eb3e67129e84496982417f01aa83d044",
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            }
+          ],
+          "log": [
+            {
+              "timestamp": "2026-11-20T12:35:08.993+00:00",
+              "request_id": "0413558015de45d3a7a956c440fa7167",
+              "route": "/submit",
+              "input_content_bytes": 357,
+              "input_words": 53,
+              "http_status": 200,
+              "duration_ms": 3298.370165,
+              "cpu_ms": 3295.919531,
+              "input_metadata_ms": 0.001558,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            },
+            {
+              "timestamp": "2026-11-20T12:35:12.294+00:00",
+              "request_id": "cd0166626a7d4c8fa9514e88d634e130",
+              "route": "/submit",
+              "input_content_bytes": 398,
+              "input_words": 48,
+              "http_status": 200,
+              "duration_ms": 180.054654,
+              "cpu_ms": 179.295571,
+              "input_metadata_ms": 0.00156,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure"
+            },
+            {
+              "timestamp": "2026-11-20T12:35:13.297+00:00",
+              "request_id": "eb3e67129e84496982417f01aa83d044",
+              "route": "/submit",
+              "input_content_bytes": 352,
+              "input_words": 52,
+              "http_status": 200,
+              "duration_ms": 3236.85507,
+              "cpu_ms": 3231.325883,
+              "input_metadata_ms": 0.001157,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human"
+            }
+          ]
+        }
+      }
+    ],
+    "5": [
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": [
+          {
+            "fixture": 1,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "3032224b7f8f493aab4828765c58f3cc",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            "ok": true
+          },
+          {
+            "fixture": 2,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "7ad47b6db7f04891b5220c6899f8e1d4",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            "ok": true
+          },
+          {
+            "fixture": 3,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "e85a8a93b0aa4ae080fdd7e0c3504ad1",
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            },
+            "ok": true
+          }
+        ]
+      },
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": [
+          {
+            "fixture": 1,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "f95bf0ea1ba440a5a01faed31b2c2430",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            "ok": true
+          },
+          {
+            "fixture": 2,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "962d6cb377b54d6bb8293e04e49f587a",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            "ok": true
+          },
+          {
+            "fixture": 3,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "11db17dac0684b8db6f797d2808d272d",
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            },
+            "ok": true
+          }
+        ]
+      },
+      {
+        "observed": 3,
+        "target": 3,
+        "met": true,
+        "sample": [
+          {
+            "fixture": 1,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "f9b5b77949084a72a43cbd0bb224c33d",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.5815,
+              "error": null
+            },
+            "ok": true
+          },
+          {
+            "fixture": 2,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "820f14105e054450a5457687726756a3",
+              "http_status": 200,
+              "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+              "guess": "unsure",
+              "confidence": 0.6483,
+              "error": null
+            },
+            "ok": true
+          },
+          {
+            "fixture": 3,
+            "unit_8": {
+              "request_id": null,
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            },
+            "capstone": {
+              "request_id": "76d7d9d011ed4877b25c0abe255c6ad2",
+              "http_status": 200,
+              "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+              "guess": "human",
+              "confidence": 0.4395,
+              "error": null
+            },
+            "ok": true
+          }
+        ]
+      }
+    ]
+  },
+  "rate_limit_control": {
+    "status_sequence": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      429
+    ],
+    "last_response": {
+      "request_id": "3e528c104ec74e97833ffb035c7e8360",
+      "http_status": 429,
+      "label": null,
+      "guess": null,
+      "confidence": null,
+      "error": "rate_limited"
+    },
+    "log": [
+      {
+        "timestamp": "2026-11-20T12:34:49.601+00:00",
+        "request_id": "3e528c104ec74e97833ffb035c7e8360",
+        "route": "/submit",
+        "input_content_bytes": 333,
+        "input_words": null,
+        "http_status": 429,
+        "duration_ms": 1.354139,
+        "cpu_ms": 1.255219,
+        "input_metadata_ms": 0.001801,
+        "reason": "rate_limited"
+      }
+    ]
+  },
+  "cost_sample": [
+    {
+      "timestamp": "2026-11-20T12:34:36.099+00:00",
+      "request_id": "f0f70e72ec8847bba8b87282d81a3ed3",
+      "route": "/submit",
+      "input_content_bytes": 357,
+      "input_words": 53,
+      "http_status": 200,
+      "duration_ms": 200.920412,
+      "cpu_ms": 200.847159,
+      "input_metadata_ms": 0.001287,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:36.302+00:00",
+      "request_id": "f2e2611da0084340936903e58c20df72",
+      "route": "/submit",
+      "input_content_bytes": 398,
+      "input_words": 48,
+      "http_status": 200,
+      "duration_ms": 178.118882,
+      "cpu_ms": 178.13764,
+      "input_metadata_ms": 0.001516,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:36.483+00:00",
+      "request_id": "9a2861b0e36f4eda8fd196121f72d4a4",
+      "route": "/submit",
+      "input_content_bytes": 352,
+      "input_words": 52,
+      "http_status": 200,
+      "duration_ms": 199.526791,
+      "cpu_ms": 199.54689,
+      "input_metadata_ms": 0.001057,
+      "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+      "guess": "human"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:36.685+00:00",
+      "request_id": "fdf43fa1aebd4e179453d73d6e9e4475",
+      "route": "/submit",
+      "input_content_bytes": 357,
+      "input_words": 53,
+      "http_status": 200,
+      "duration_ms": 193.831371,
+      "cpu_ms": 193.743499,
+      "input_metadata_ms": 0.001143,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:36.881+00:00",
+      "request_id": "b37dc8eb9d7141cb979c1a2d5f116239",
+      "route": "/submit",
+      "input_content_bytes": 398,
+      "input_words": 48,
+      "http_status": 200,
+      "duration_ms": 183.57158,
+      "cpu_ms": 183.822962,
+      "input_metadata_ms": 0.001333,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:37.067+00:00",
+      "request_id": "4713f9b19a224bd3a2a5a8dac666dcdb",
+      "route": "/submit",
+      "input_content_bytes": 352,
+      "input_words": 52,
+      "http_status": 200,
+      "duration_ms": 189.569985,
+      "cpu_ms": 189.611714,
+      "input_metadata_ms": 0.001353,
+      "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+      "guess": "human"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:37.259+00:00",
+      "request_id": "9ea14f92cd3a4a2cab050702aaf30153",
+      "route": "/submit",
+      "input_content_bytes": 357,
+      "input_words": 53,
+      "http_status": 200,
+      "duration_ms": 184.496485,
+      "cpu_ms": 184.521149,
+      "input_metadata_ms": 0.001169,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:37.446+00:00",
+      "request_id": "c8bef6f5efdd4e42b33509c4b211f59d",
+      "route": "/submit",
+      "input_content_bytes": 398,
+      "input_words": 48,
+      "http_status": 200,
+      "duration_ms": 179.859451,
+      "cpu_ms": 179.884542,
+      "input_metadata_ms": 0.001304,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:37.628+00:00",
+      "request_id": "ccce83a89b984ae6bd5d8258b9a90882",
+      "route": "/submit",
+      "input_content_bytes": 352,
+      "input_words": 52,
+      "http_status": 200,
+      "duration_ms": 184.967186,
+      "cpu_ms": 185.000809,
+      "input_metadata_ms": 0.001041,
+      "label": "Every post here gets an automated check for AI-generated writing. This one found nothing that points to AI, so we think a person wrote it.",
+      "guess": "human"
+    },
+    {
+      "timestamp": "2026-11-20T12:34:37.816+00:00",
+      "request_id": "8aeea8735657421285cacc415439c4f7",
+      "route": "/submit",
+      "input_content_bytes": 357,
+      "input_words": 53,
+      "http_status": 200,
+      "duration_ms": 194.73212,
+      "cpu_ms": 194.32607,
+      "input_metadata_ms": 0.001204,
+      "label": "Our automated check couldn't tell whether a person or an AI wrote this. That happens with a lot of real writing, especially plain or very polished writing. It is not a finding against the writer. Nothing needs to change, and the post stays up as normal.",
+      "guess": "unsure"
+    }
+  ],
+  "mean_cpu_seconds": 0.18894424340000002,
+  "mean_wall_seconds": 0.1889594263
+}
