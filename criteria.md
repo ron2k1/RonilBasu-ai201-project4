@@ -140,3 +140,18 @@ never gets found.
      A number you missed stays where it is, gets diagnosed, and gets a fix
      attempted. That's where the points are.
      ───────────────────────────────────────────────────────────────────────── -->
+
+## Capstone
+
+Shape A: add a reproducible local run path and request observability to Provenance Guard. Keep detector, scoring and appeal behavior unchanged. These targets were approved before capstone testing. Dot helped draft them and I selected the targets before seeing any results. A criterion passes only if every one of its three independent trials meets the target.
+
+1. **Every submission leaves one record.** In each trial, send ten valid `POST /submit` requests. The log must gain exactly ten JSON records. Each has a UTC timestamp, request ID, input word count, response status, output label and nonnegative duration in milliseconds.
+   **Why:** I want 10 of 10 because a missing entry makes a real request look like it never happened.
+2. **I can match a response to its log.** In each trial, send five valid `POST /submit` requests. All five responses must return distinct request IDs. Each ID must match exactly one log record with the same HTTP status and label.
+   **Why:** I want 5 of 5 because a log I can't tie back to a response can't explain that response.
+3. **Bad input still leaves a trace.** In each trial, submit one malformed JSON body, one JSON object missing text and one valid JSON object with text below the word minimum. Use otherwise valid creator IDs where the request allows. The responses must be 400, 400 and 422 respectively. Each response ID must match a log record with its rejection reason and duration, but no label.
+   **Why:** I want 3 of 3 because a refusal is not a judgment about who wrote the text.
+4. **The record survives a restart.** In each trial, send two valid requests, stop and restart the local server with the same log path, then send one more valid request. All three response request IDs must be in the same JSONL file exactly once.
+   **Why:** I want 3 of 3 because I need to diagnose a run after the server is gone.
+5. **The extension doesn't change a decision.** In each trial, submit the same three fixed text fixtures to the original Unit 8 server and to the instrumented server, with the same model version. All three must return the same label and guess, with confidence within 0.000001.
+   **Why:** I'm adding visibility, not changing the classifier.
